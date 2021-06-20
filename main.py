@@ -21,11 +21,8 @@ with pyvirtualcam.Camera(width=640, height=480, fps=20) as cam:
             elif y+h+100 > 480 or x+w+100 >640:
                 frame = frame[y:y + h, x:x + w]
             else:
-                rame = frame[y:y + h+100, x:x + w+100]
+                frame = frame[y:y + h+100, x:x + w+100]
 
-
-
-        # frame[:] = cam.frames_sent % 255  # grayscale animation
         cv2.waitKey(0)
         # frame = cv2.resize(frame,(1280,720))
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
