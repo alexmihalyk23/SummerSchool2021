@@ -38,8 +38,8 @@ with pyvirtualcam.Camera(width=640, height=480, fps=20) as cam:
             yMaxROI = yMaxROI + (CenterFace[1] - CenterROI[1])
             xMaxROI = xMaxROI + (CenterFace[0] - CenterROI[0])
 
-        if xROI < 0 or yROI < 0:
-            ROI = frame[80:yMaxROI, 80:xMaxROI]
+        if xROI < 0 or yROI < 0 or xMaxROI > 640 or yMaxROI > 480:
+            ROI = frame[0:480, 0:640]
         else:
             ROI = frame[yROI:yMaxROI, xROI:xMaxROI]
 
