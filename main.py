@@ -21,15 +21,10 @@ with pyvirtualcam.Camera(width=640, height=480, fps=20) as cam:
         faces = face_cascade.detectMultiScale(frame, scaleFactor=1.2, minNeighbors=12)
 
         for x, y, w, h in faces:
-            frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-            #
-            # if x > 100 and y > 100:
-            #     crop_img = frame[y - 100:y + h + 100, x - 100:x + w + 100]
-            # else:
-            #     crop_img = frame[y:y + h + 100, x + 100:x + w + 100]
+            # frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
             CenterFace = [(x + x + w) // 2, (y + y + h) // 2]
-            frame = cv2.circle(frame, CenterFace, 1, (244, 22, 244))
+            # frame = cv2.circle(frame, CenterFace, 1, (244, 22, 244))
         if not (CenterFace[0] in range(CenterROI[0] - 5, CenterROI[0] + 10) and CenterFace[1] in range(CenterROI[1] - 5,
                                                                                                        CenterROI[
                                                                                                         1] + 10)):
@@ -44,7 +39,6 @@ with pyvirtualcam.Camera(width=640, height=480, fps=20) as cam:
             ROI = frame[yROI:yMaxROI, xROI:xMaxROI]
 
         cv2.waitKey(0)
-        # frame = cv2.resize(frame,(1280,720))
         frame = cv2.cvtColor(ROI, cv2.COLOR_BGR2RGB)
         cam.send(cv2.resize(frame,(640,480)))
         cam.sleep_until_next_frame()
