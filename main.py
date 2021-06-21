@@ -1,12 +1,12 @@
 import pyvirtualcam
-import numpy as np
+
 import cv2
 face_cascade = cv2.CascadeClassifier("haar.xml")
 yROI = 80
 yMaxROI = 400
 xROI = 80
 xMaxROI = 560
-# imCrop = img[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]
+
 CenterFace = [(xROI + xMaxROI) // 2, (yROI + yMaxROI) // 2]
 with pyvirtualcam.Camera(width=640, height=480, fps=20) as cam:
     cap = cv2.VideoCapture(0)
@@ -22,11 +22,11 @@ with pyvirtualcam.Camera(width=640, height=480, fps=20) as cam:
 
         for x, y, w, h in faces:
             frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-
-            if x > 100 and y > 100:
-                crop_img = frame[y - 100:y + h + 100, x - 100:x + w + 100]
-            else:
-                crop_img = frame[y:y + h + 100, x + 100:x + w + 100]
+            #
+            # if x > 100 and y > 100:
+            #     crop_img = frame[y - 100:y + h + 100, x - 100:x + w + 100]
+            # else:
+            #     crop_img = frame[y:y + h + 100, x + 100:x + w + 100]
 
             CenterFace = [(x + x + w) // 2, (y + y + h) // 2]
             frame = cv2.circle(frame, CenterFace, 1, (244, 22, 244))
