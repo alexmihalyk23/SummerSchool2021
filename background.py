@@ -11,7 +11,7 @@ cap = cv2.VideoCapture(0)
 with mp_selfie_segmentation.SelfieSegmentation(
     model_selection=1) as selfie_segmentation:
   # bg_image = None
-  bg_image = cv2.resize(cv2.imread('C:\\Users\\alexm\\Pictures\\english_3.png'), (640, 480))
+  bg_image = cv2.resize(cv2.imread('PUT_IMAGE_HERE'), (640, 480))
   while cap.isOpened():
     success, image = cap.read()
     if not success:
