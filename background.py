@@ -8,10 +8,11 @@ mp_selfie_segmentation = mp.solutions.selfie_segmentation
 BG_COLOR = (192, 192, 192) # gray
 cap = cv2.VideoCapture(0)
 
+
 with mp_selfie_segmentation.SelfieSegmentation(
     model_selection=1) as selfie_segmentation:
-  # bg_image = None
-  bg_image = cv2.resize(cv2.imread('C:\\Users\\alexm\\Pictures\\english_3.png'), (640, 480))
+  bg_image = None
+  #bg_image = cv2.resize(cv2.imread('C:\\Users\\alexm\\Pictures\\english_3.png'), (640, 480))
   while cap.isOpened():
     success, image = cap.read()
     if not success:
@@ -39,7 +40,7 @@ with mp_selfie_segmentation.SelfieSegmentation(
     #   a) Load an image (with the same width and height of the input image) to
     #      be the background, e.g., bg_image = cv2.imread('/path/to/image/file')
     #   b) Blur the input image by applying image filtering, e.g.,
-    # bg_image = cv2.GaussianBlur(image,(55,55),0)
+    bg_image = cv2.GaussianBlur(image,(25,25),0)
 
     if bg_image is None:
       bg_image = np.zeros(image.shape, dtype=np.uint8)
