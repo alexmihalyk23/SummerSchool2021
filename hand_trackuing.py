@@ -91,7 +91,7 @@
 
 import cv2
 import numpy as np
-import HandTrackingModule as htm
+from cvzone.HandTrackingModule import HandDetector
 import time
 import autopy
 
@@ -108,9 +108,9 @@ clocX, clocY = 0, 0
 cap = cv2.VideoCapture(0)
 cap.set(3, wCam)
 cap.set(4, hCam)
-detector = htm.handDetector(maxHands=1)
+detector = HandDetector(maxHands=1)
 wScr, hScr = autopy.screen.size()
-# print(wScr, hScr)
+print(wScr, hScr)
 
 while True:
     # 1. Find hand Landmarks
@@ -119,14 +119,21 @@ while True:
     lmList, bbox = detector.findPosition(img)
     # 2. Get the tip of the index and middle fingers
     if len(lmList) != 0:
-        x1, y1 = lmList[8][1:]
-        x2, y2 = lmList[12][1:]
+        print("lm",lmList[8])
+        x1, y1 = lmList[8]
+        x2, y2 = lmList[12]
         print(x1, y1, x2, y2)
      # 3. Check which fingers are up
         fingers = detector.fingersUp()
         print(fingers)
     # # print(fingers)
         cv2.rectangle(img, (frameR, frameR), (wCam - frameR, hCam - frameR),(255, 0, 255), 2)
+        # cv2.circle(img, (lmList[0]), 15, (0, 0, 222), -1)
+        # cv2.circle(img, (lmList[1]), 15, (0, 255, 0), -1)
+        # cv2.circle(img, (lmList[2]), 15, (255, 0, 0), -1)
+        # cv2.circle(img, (lmList[3]), 15, (255, 0, 255), -1)
+        # cv2.circle(img, (lmList[20]), 15, (255, 255, 255), -1)
+        # cv2.circle(img, (lmList[16]), 15, (0, 0, 0), -1)
     # # 4. Only Index Finger : Moving Mode
         if fingers[1] == 1 and fingers[2] == 0:
     #     # 5. Convert Coordinates
@@ -139,6 +146,7 @@ while True:
             # 7. Move Mouse
             autopy.mouse.move(wScr - clocX, clocY)
             cv2.circle(img, (x1, y1), 15, (255, 0, 255), cv2.FILLED)
+
             plocX, plocY = clocX, clocY
 
     # 8. Both Index and middle fingers are up : Clicking Mode
@@ -147,7 +155,7 @@ while True:
             length, img, lineInfo = detector.findDistance(8, 12, img)
             print(length)
             # 10. Click mouse if distance short
-            if length < 40:
+            if length < 60:
                 cv2.circle(img, (lineInfo[4], lineInfo[5]),
                            15, (0, 255, 0), cv2.FILLED)
                 autopy.mouse.click()
