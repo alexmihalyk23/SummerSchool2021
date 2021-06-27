@@ -95,7 +95,7 @@ def select_image():
 
 def meet(image):
     if path is not None:
-        imgOut = segmentator.removeBG(image, cv2.resize(cv2.imread(path),(640,480)), threshold=0.7)
+        imgOut = segmentator.removeBG(image, cv2.resize(cv2.cvtColor(cv2.imread(path),cv2.COLOR_BGR2RGB),(640,480)), threshold=0.7)
     else:
         imgOut = segmentator.removeBG(image, cv2.GaussianBlur(image, (25, 25), 0), threshold=0.7)
 
