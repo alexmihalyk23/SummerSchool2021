@@ -132,28 +132,113 @@ import numpy as np
 
 #############
 
-img1 = cv2.imread('C:/Users/alexm/Pictures/english_1.png')
-img2 = cv2.imread('test.png')
-img2 = cv2.resize(img2, (160,120))
-# I want to put logo on top-left corner, So I create a ROI
-rows,cols,channels = img2.shape
-roi = img1[0:rows, 0:cols]
-# Now create a mask of logo and create its inverse mask also
-img2gray = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
-# threshold это пороговое значение
-# это значит что все пиксели, которые меньше порога становятся 0 а все что больше - 255
-# для того чтобы это работало корректно, сначала нам нужно перевести изображение в оттенки серого
-ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
-print(mask)
-mask_inv = cv2.bitwise_not(mask)
-print(mask_inv)
-# Now black-out the area of logo in ROI
-img1_bg = cv2.bitwise_and(roi,roi,mask = mask_inv)
-# Take only region of logo from logo image.
-img2_fg = cv2.bitwise_and(img2,img2,mask = mask)
-# Put logo in ROI and modify the main image
-dst = cv2.add(img1_bg,img2_fg)
-img1[0:rows, 0:cols ] = dst
-cv2.imshow('res',img1)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# img1 = cv2.imread('C:/Users/alexm/Pictures/english_1.png')
+# img2 = cv2.imread('mask.png')
+# img2 = cv2.resize(img2, (160,120))
+# # I want to put logo on top-left corner, So I create a ROI
+# rows,cols,channels = img2.shape
+# roi = img1[0:rows, 0:cols]
+# # Now create a mask of logo and create its inverse mask also
+# img2gray = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
+# # threshold это пороговое значение
+# # это значит что все пиксели, которые меньше порога становятся 0 а все что больше - 255
+# # для того чтобы это работало корректно, сначала нам нужно перевести изображение в оттенки серого
+# ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
+# print(mask)
+# mask_inv = cv2.bitwise_not(mask)
+# print(mask_inv)
+# # !!!!! Дописать
+# # Now black-out the area of logo in ROI
+# img1_bg = cv2.bitwise_and(roi,roi,mask = mask_inv)
+# # Take only region of logo from logo image.
+# img2_fg = cv2.bitwise_and(img2,img2,mask = mask)
+# # Put logo in ROI and modify the main image
+# dst = cv2.add(img1_bg,img2_fg)
+# img1[0:rows, 0:cols ] = dst
+# cv2.imshow('res',img1)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+
+# поработаем с нажатием мышки
+# # получим кадр с камеры
+# cap = cv2.VideoCapture(0)
+# ret, img = cap.read()
+# # coordinates = np.zeros((1,2), np.int)
+# #создадим массив coordinates
+# coordinates = []
+#создадим функцию, которая будет возвращать координаты где мы нажали на левую кнопку мыши
+# def MouseClick(event, x, y, flags, params):
+#     # если событие равно нажатию левой кнопкой мыши
+#     if event == cv2.EVENT_LBUTTONDOWN:
+#         #добавляем координаты x и y в наш массив
+#         coordinates.append(x)
+#         coordinates.append(y)
+#         print(coordinates)
+#
+#
+# while True:
+#     print(len(coordinates))
+#     # если координаты есть
+#     if len(coordinates) !=0:
+#         # нарисуем круг по нашим координатам
+#         cv2.circle(img, (coordinates[0], coordinates[1]), 5, (0, 0, 200), -1)
+#         # очистим наш массив, чтобы мы могли его снова заполнить
+#         coordinates.clear()
+#
+#     cv2.imshow("lesson_1", img)
+#     # и вызываем нашу функцию по нажатию мыши
+#     cv2.setMouseCallback("lesson_1", MouseClick)
+#     cv2.waitKey(1)
+
+
+# теперь напишем кое-что интересное
+# импортируем библиотеку numpy для работы с массивами
+import numpy as np
+# создадим массив 4 на 2
+# заполним его нулями
+circles = np.zeros((4,2), np.int)
+# также создадим счетчик
+counter = 0
+# прочитаем кадр
+cap = cv2.VideoCapture(0)
+ret, img = cap.read()
+# img = cv2.imread("test.png")
+def MouseClick(event, x, y, flags, params):
+    global counter
+    # теперь мы добавим координаты в наш массив и прибавим 1 к счетчику
+    if event == cv2.EVENT_LBUTTONDOWN:
+        circles[counter] = x,y
+        counter +=1
+        print(circles)
+
+while True:
+
+    if counter == 4:
+        width, height = 250,350
+        # pts1 это координаты наших точек
+        pts1 = np.float32([circles[0], circles[1], circles[2],circles[3]])
+        # pts2  это координаты, куда будут помещены наши точки
+        pts2 = np.float32([[0,0],[width,0], [0,height],[width,height]])
+        print("pts",pts1,pts2)
+        # теперь создадим матрицу matrix которая получит преобразование перспективы
+        matrix = cv2.getPerspectiveTransform(pts1,pts2)
+        # и теперь наконец деформируем наши точки по заданной выше маске и также задаем высоту и ширину
+        imgOutput = cv2.warpPerspective(img, matrix, (width,height))
+        cv2.imshow("output", imgOutput)
+
+    for x in range(0,4):
+        print(circles[x][0])
+        cv2.circle(img,(circles[x][0],circles[x][1]),5, (0,0,200),-1)
+
+
+
+
+    cv2.imshow("lesson_1", img)
+    cv2.setMouseCallback("lesson_1", MouseClick)
+    key = cv2.waitKey(1)
+    if key == ord("s"):
+        cv2.imwrite("img.png", imgOutput)
+    elif key == ord("q"):
+        break
+    # cv2.waitKey(1)
