@@ -241,4 +241,4 @@ while True:
         cv2.imwrite("img.png", imgOutput)
     elif key == ord("q"):
         break
-    # cv2.waitKey(1)
+
