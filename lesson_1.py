@@ -203,6 +203,7 @@ counter = 0
 # прочитаем кадр
 cap = cv2.VideoCapture(0)
 ret, img = cap.read()
+
 # img = cv2.imread("test.png")
 def MouseClick(event, x, y, flags, params):
     global counter
@@ -241,4 +242,5 @@ while True:
         cv2.imwrite("img.png", imgOutput)
     elif key == ord("q"):
         break
+
 
