@@ -35,7 +35,6 @@ while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
     img = cv2.resize(img, (1280,720))
-
     # 2. Find Hand Landmarks
     img = detector.findHands(img)
     lmList, _ = detector.findPosition(img)
