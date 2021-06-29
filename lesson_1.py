@@ -194,53 +194,121 @@ import numpy as np
 
 # теперь напишем кое-что интересное
 # импортируем библиотеку numpy для работы с массивами
+# import numpy as np
+# # создадим массив 4 на 2
+# # заполним его нулями
+# circles = np.zeros((4,2), np.int)
+# # также создадим счетчик
+# counter = 0
+# # прочитаем кадр
+# cap = cv2.VideoCapture(0)
+# ret, img = cap.read()
+#
+# # img = cv2.imread("test.png")
+# def MouseClick(event, x, y, flags, params):
+#     global counter
+#     # теперь мы добавим координаты в наш массив и прибавим 1 к счетчику
+#     if event == cv2.EVENT_LBUTTONDOWN:
+#         circles[counter] = x,y
+#         counter +=1
+#         print(circles)
+#
+# while True:
+#
+#     if counter == 4:
+#         width, height = 250,350
+#         # pts1 это координаты наших точек
+#         pts1 = np.float32([circles[0], circles[1], circles[2],circles[3]])
+#         # pts2  это координаты, куда будут помещены наши точки
+#         pts2 = np.float32([[0,0],[width,0], [0,height],[width,height]])
+#         print("pts",pts1,pts2)
+#         # теперь создадим матрицу matrix которая получит преобразование перспективы
+#         matrix = cv2.getPerspectiveTransform(pts1,pts2)
+#         # и теперь наконец деформируем наши точки по заданной выше маске и также задаем высоту и ширину
+#         imgOutput = cv2.warpPerspective(img, matrix, (width,height))
+#         cv2.imshow("output", imgOutput)
+#
+#     for x in range(0,4):
+#         print(circles[x][0])
+#         cv2.circle(img,(circles[x][0],circles[x][1]),5, (0,0,200),-1)
+#
+#
+#
+#
+#     cv2.imshow("lesson_1", img)
+#     cv2.setMouseCallback("lesson_1", MouseClick)
+#     key = cv2.waitKey(1)
+#     if key == ord("s"):
+#         cv2.imwrite("img.png", imgOutput)
+#     elif key == ord("q"):
+#         break
+
+# Features Detector
+# Как вы собираете пазлы?
+#https://docs.opencv.org/3.4/df/d54/tutorial_py_features_meaning.html
+
+
+#Для начала импортируем необходимые библиотеки и прочитаем два изображения
 import numpy as np
-# создадим массив 4 на 2
-# заполним его нулями
-circles = np.zeros((4,2), np.int)
-# также создадим счетчик
-counter = 0
-# прочитаем кадр
+import cv2
 cap = cv2.VideoCapture(0)
-ret, img = cap.read()
 
-# img = cv2.imread("test.png")
-def MouseClick(event, x, y, flags, params):
-    global counter
-    # теперь мы добавим координаты в наш массив и прибавим 1 к счетчику
-    if event == cv2.EVENT_LBUTTONDOWN:
-        circles[counter] = x,y
-        counter +=1
-        print(circles)
+img1 = cv2.imread('testF1.jpg')
 
+img2 = cv2.imread('testF2.jpg')
+
+# инициализируем наш детектор orb для нас он подойдет лучше всего, с остальными можно ознакомиться  в документации
+orb = cv2.ORB_create(nfeatures=1000)
 while True:
+    imgweb = cap.read()[1]
+# keypoints наши ключевые точки на изображении
+# descriptor =
+# первый параметр это наше изображение, второй это маска по которой будут определятся точки
+# в нашем случае его у нас нет
+    kp1, des1 = orb.detectAndCompute(img1, None)
+    # kp2, des2 = orb.detectAndCompute(img2, None)
+    kp2, des2 = orb.detectAndCompute(imgweb, None)
+    # теперь для наглядности отобразим наши точки на изображении
+    imgkp1 = cv2.drawKeypoints(img1, kp1,None)
+    imgkp2 = cv2.drawKeypoints(imgweb, kp2,None)
 
-    if counter == 4:
-        width, height = 250,350
-        # pts1 это координаты наших точек
-        pts1 = np.float32([circles[0], circles[1], circles[2],circles[3]])
-        # pts2  это координаты, куда будут помещены наши точки
-        pts2 = np.float32([[0,0],[width,0], [0,height],[width,height]])
-        print("pts",pts1,pts2)
-        # теперь создадим матрицу matrix которая получит преобразование перспективы
-        matrix = cv2.getPerspectiveTransform(pts1,pts2)
-        # и теперь наконец деформируем наши точки по заданной выше маске и также задаем высоту и ширину
-        imgOutput = cv2.warpPerspective(img, matrix, (width,height))
-        cv2.imshow("output", imgOutput)
+    #Что за дескрипторы
+    print(des1.shape)
+    print(des1[0])
 
-    for x in range(0,4):
-        print(circles[x][0])
-        cv2.circle(img,(circles[x][0],circles[x][1]),5, (0,0,200),-1)
+    bf = cv2.BFMatcher()
+    matches = bf.knnMatch(des1,des2,2)
+
+    good = []
+    for m,n in matches:
+        if m.distance < 0.75 * n.distance:
+            good.append([m])
+        # print(f"m - {m.distance}, n - {n.distance}")
+    print(len(good))
+
+    if len(good) > 30:
+        cv2.putText(imgweb, "blagodarnost", (50,50), cv2.FONT_HERSHEY_PLAIN, 3,(255,0,255))
+
+    img3 = cv2.drawMatchesKnn(img1,kp1,imgweb,kp2,good,None)
+
+    cv2.imshow("img1", img1)
+    cv2.imshow("imgkp1", imgkp1)
+    cv2.imshow("imgkp2", imgweb)
+    cv2.imshow("img2", img2)
+    cv2.imshow("img3", img3)
+
+    cv2.waitKey(1)
 
 
-
-
-    cv2.imshow("lesson_1", img)
-    cv2.setMouseCallback("lesson_1", MouseClick)
-    key = cv2.waitKey(1)
-    if key == ord("s"):
-        cv2.imwrite("img.png", imgOutput)
-    elif key == ord("q"):
-        break
-
-
+# filename = 'C:/users/alexm/Pictures/testAR3.jpg'
+# img = cv.imread(filename)
+# gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+# gray = np.float32(gray)
+# dst = cv.cornerHarris(gray,2,3,0.04)
+# #result is dilated for marking the corners, not important
+# dst = cv.dilate(dst,None)
+# # Threshold for an optimal value, it may vary depending on the image.
+# img[dst>0.01*dst.max()]=[0,0,255]
+# cv.imshow('dst',img)
+# if cv.waitKey(0) & 0xff == 27:
+#     cv.destroyAllWindows()

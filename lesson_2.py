@@ -323,6 +323,11 @@
 #
 
 
+
+
+
+
+
 # import cv2
 #
 # from cvzone.HandTrackingModule import HandDetector
@@ -365,65 +370,65 @@ import cv2
 
 from cvzone.HandTrackingModule import HandDetector
 import numpy as np
-cap = cv2.VideoCapture(0)
-
-detector = HandDetector(maxHands=1)
-xp, yp = 0,0
-imgCanvas = np.zeros((480, 640, 3), np.uint8)
-cv2.namedWindow("lesson_2")
-def nothing(x):
-    pass
-cv2.createTrackbar('R','lesson_2',0,255,nothing)
-cv2.createTrackbar('G','lesson_2',0,255,nothing)
-cv2.createTrackbar('B','lesson_2',0,255,nothing)
-
-
-while True:
-    r = cv2.getTrackbarPos('R', 'lesson_2')
-    g = cv2.getTrackbarPos('G','lesson_2')
-    b = cv2.getTrackbarPos('B','lesson_2')
-    ret, frame = cap.read()
-    frame = detector.findHands(frame)
-    lmList, bbox = detector.findPosition(frame)
-    if len(lmList) != 0:
-        # print("lm", lmList[8])
-        x1, y1 = lmList[8]
-        x2, y2 = lmList[12]
-        # print(x1, y1, x2, y2)
-        fingers = detector.fingersUp()
-        # print(fingers)
-        if fingers[1] == 1 and fingers[2] ==0:
-
-            # length, img, lineInfo = detector.findDistance(8, 12, frame)
-            # print(length)
-            print(f'before xp {xp},yp {yp} x1 {x1} y1 {y1}')
-            if xp == 0 and yp == 0:
-                xp, yp = x1, y1
-
-            cv2.line(frame, (xp, yp), (x1, y1), (255,0,255), 25)
-            cv2.line(imgCanvas, (xp, yp), (x1, y1), (b,g,r), 25)
-            print(f' after xp {xp},yp {yp} x1 {x1} y1 {y1}')
-
-            xp, yp = x1, y1
-            print(f' afterxp {xp},yp {yp} x1 {x1} y1 {y1}')
-
-    imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
-    _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
-    imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
-    img = cv2.bitwise_and(frame, imgInv)
-    img = cv2.bitwise_or(img, imgCanvas)
-            # lineInfo =  x,y,w,h, centerX, centerY
-            # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
-    # print(detector.fingersUp())
-
-
-
-    cv2.imshow("lesson_2", img)
-    key = cv2.waitKey(1)
-    if key == ord("q"):
-        break
-
-
+# cap = cv2.VideoCapture(0)
+#
+# detector = HandDetector(maxHands=1)
+# xp, yp = 0,0
+# imgCanvas = np.zeros((480, 640, 3), np.uint8)
+# cv2.namedWindow("lesson_2")
+# def nothing(x):
+#     pass
+# cv2.createTrackbar('R','lesson_2',0,255,nothing)
+# cv2.createTrackbar('G','lesson_2',0,255,nothing)
+# cv2.createTrackbar('B','lesson_2',0,255,nothing)
+#
+#
+# while True:
+#     r = cv2.getTrackbarPos('R', 'lesson_2')
+#     g = cv2.getTrackbarPos('G','lesson_2')
+#     b = cv2.getTrackbarPos('B','lesson_2')
+#     ret, frame = cap.read()
+#     frame = detector.findHands(frame)
+#     lmList, bbox = detector.findPosition(frame)
+#     if len(lmList) != 0:
+#         # print("lm", lmList[8])
+#         x1, y1 = lmList[8]
+#         x2, y2 = lmList[12]
+#         # print(x1, y1, x2, y2)
+#         fingers = detector.fingersUp()
+#         # print(fingers)
+#         if fingers[1] == 1 and fingers[2] ==0:
+#
+#             # length, img, lineInfo = detector.findDistance(8, 12, frame)
+#             # print(length)
+#             print(f'before xp {xp},yp {yp} x1 {x1} y1 {y1}')
+#             if xp == 0 and yp == 0:
+#                 xp, yp = x1, y1
+#
+#             cv2.line(frame, (xp, yp), (x1, y1), (255,0,255), 25)
+#             cv2.line(imgCanvas, (xp, yp), (x1, y1), (b,g,r), 25)
+#             print(f' after xp {xp},yp {yp} x1 {x1} y1 {y1}')
+#
+#             xp, yp = x1, y1
+#             print(f' afterxp {xp},yp {yp} x1 {x1} y1 {y1}')
+#
+#     imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
+#     _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
+#     imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
+#     img = cv2.bitwise_and(frame, imgInv)
+#     img = cv2.bitwise_or(img, imgCanvas)
+#             # lineInfo =  x,y,w,h, centerX, centerY
+#             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
+#     # print(detector.fingersUp())
+#
+#
+#
+#     cv2.imshow("lesson_2", img)
+#     key = cv2.waitKey(1)
+#     if key == ord("q"):
+#         break
+#
+#
 
 
 # теперь сделаем управление мышкой с помощью наших пальцев
@@ -490,8 +495,6 @@ while True:
 #     if key == ord("q"):
 #         break
 #
-
-
 
 
 
