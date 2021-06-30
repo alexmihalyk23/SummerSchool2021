@@ -335,54 +335,54 @@
 
 ########################   17   ########################
 
-import cv2
-# теперь поработаем с трекингом рук
-from cvzone.HandTrackingModule import HandDetector
-
-cap = cv2.VideoCapture(0)
-# также как и впрошлый раз инициализируем детектор
-detector = HandDetector(maxHands=1)
-
-while True:
-    ret, frame = cap.read()
-    # теперь находим наши руки на изображении
-    frame = detector.findHands(frame)
-    #теперь можно показать
-
-
-    lmList, HandInfo = detector.findPosition(frame)
-    print(lmList)
-    print(HandInfo)
-    #lmList это наши точки на руке
-    # всего их 21 штука например 8 это верхняя часть указательного
-    # а 12 это верхняя часть среднего
-    print(len(lmList))
-    if len(lmList) != 0:
-        # print("lm", lmList[8])
-        x1, y1 = lmList[8]
-        x2, y2 = lmList[12]
-        # print(x1, y1, x2, y2)
-        # теперь посмотрим какие пальцы подняты
-        fingers = detector.fingersUp()
-        print(fingers)
-        # print(fingers)
-        # если указательный и средний подняты
-        if fingers[1] == 1 and fingers[2] ==1:
-            # тогда можем найти дистанцию между двумя нашими пальцами
-            length, img, lineInfo = detector.findDistance(8, 12, frame)
-            print(length)
-            print(lineInfo)
-            # lineInfo =  x,y,w,h, centerX, centerY
-
-            # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
-    # print(detector.fingersUp())
-
-
-
-    cv2.imshow("lesson_2", frame)
-    key = cv2.waitKey(1)
-    if key == ord("q"):
-        break
+# import cv2
+# # теперь поработаем с трекингом рук
+# from cvzone.HandTrackingModule import HandDetector
+#
+# cap = cv2.VideoCapture(0)
+# # также как и впрошлый раз инициализируем детектор
+# detector = HandDetector(maxHands=1)
+#
+# while True:
+#     ret, frame = cap.read()
+#     # теперь находим наши руки на изображении
+#     frame = detector.findHands(frame)
+#     #теперь можно показать
+#
+#
+#     lmList, HandInfo = detector.findPosition(frame)
+#     print(lmList)
+#     print(HandInfo)
+#     #lmList это наши точки на руке
+#     # всего их 21 штука например 8 это верхняя часть указательного
+#     # а 12 это верхняя часть среднего
+#     print(len(lmList))
+#     if len(lmList) != 0:
+#         # print("lm", lmList[8])
+#         x1, y1 = lmList[8]
+#         x2, y2 = lmList[12]
+#         # print(x1, y1, x2, y2)
+#         # теперь посмотрим какие пальцы подняты
+#         fingers = detector.fingersUp()
+#         print(fingers)
+#         # print(fingers)
+#         # если указательный и средний подняты
+#         if fingers[1] == 1 and fingers[2] ==1:
+#             # тогда можем найти дистанцию между двумя нашими пальцами
+#             length, img, lineInfo = detector.findDistance(8, 12, frame)
+#             print(length)
+#             print(lineInfo)
+#             # lineInfo =  x,y,w,h, centerX, centerY
+#
+#             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
+#     # print(detector.fingersUp())
+#
+#
+#
+#     cv2.imshow("lesson_2", frame)
+#     key = cv2.waitKey(1)
+#     if key == ord("q"):
+#         break
 
 ########################   19   ########################
 
@@ -524,8 +524,19 @@ import numpy as np
 
 
 
-
-
+from cvzone.PoseModule import PoseDetector
+from cvzone.FaceMeshModule import FaceMeshDetector
+# cap = cv2.VideoCapture(0)
+#
+# # detector = PoseDetector()
+# detector =
+# while True:
+#     ret, frame = cap.read()
+#     frame, faces = detector.findFaceMesh(frame)
+#     print(faces)
+#     cv2.imshow("pose", frame)
+#     cv2.waitKey(1)
+#
 
 
 
