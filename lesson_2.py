@@ -1,3 +1,5 @@
+########################   10   ########################
+
 # # сегодня познакомимся с каскадом хаара
 # import cv2
 #
@@ -19,6 +21,8 @@
 #         break
 # cv2.destroyAllWindows()
 
+########################   11   ########################
+# трекинг лица
 #
 # import cv2
 #
@@ -75,8 +79,10 @@
 #         break
 # cv2.destroyAllWindows()
 
+########################   12   ########################
 
-# наконец мы научимся рабоать с нейросетями
+
+# наконец мы научимся работать с нейросетями
 # мы воспользуемся библиотекой medipipe от Google
 # вы наверняка ее уже встречали если пользовались google meet
 # удаление заднего фона происходит благодаря данной библеотеке
@@ -121,7 +127,7 @@
 
 
 
-
+########################   13   ########################
 
 # теперь познакомимся с более удобной библиотекой для работы с mediapipe
 #cvzone pip install cvzone
@@ -151,7 +157,7 @@
 #     if key == ord("q"):
 #         break
 
-
+########################   14   ########################
 
 # теперь давайте сравним точность каскада хаара и нейронной сети для распознаввния лиц
 # для этого склдеем два наших кадра
@@ -186,7 +192,7 @@
 #     if key == ord("q"):
 #         break
 # cv2.destroyAllWindows()
-
+########################   15   ########################
 
 # Задание сделать отслеживание лица, которое мы сделали с помощью каскада хаара, с помощью нейронной сети
 
@@ -245,6 +251,7 @@
 #         break
 # cv2.destroyAllWindows()
 
+########################   16   ########################
 
 # Познакомимся с виртуальной камерой
 # мы уже научились работать с нашей основной камерой но что если мы хотим вывести изображение
@@ -326,42 +333,58 @@
 
 
 
+########################   17   ########################
+
+import cv2
+# теперь поработаем с трекингом рук
+from cvzone.HandTrackingModule import HandDetector
+
+cap = cv2.VideoCapture(0)
+# также как и впрошлый раз инициализируем детектор
+detector = HandDetector(maxHands=1)
+
+while True:
+    ret, frame = cap.read()
+    # теперь находим наши руки на изображении
+    frame = detector.findHands(frame)
+    #теперь можно показать
 
 
-# import cv2
-#
-# from cvzone.HandTrackingModule import HandDetector
-#
-# cap = cv2.VideoCapture(0)
-#
-# detector = HandDetector(maxHands=1)
-#
-# while True:
-#     ret, frame = cap.read()
-#     frame = detector.findHands(frame)
-#     lmList, bbox = detector.findPosition(frame)
-#     if len(lmList) != 0:
-#         # print("lm", lmList[8])
-#         x1, y1 = lmList[8]
-#         x2, y2 = lmList[12]
-#         # print(x1, y1, x2, y2)
-#         fingers = detector.fingersUp()
-#         # print(fingers)
-#         if fingers[1] == 1 and fingers[2] ==1:
-#             length, img, lineInfo = detector.findDistance(8, 12, frame)
-#             print(length)
-#             # lineInfo =  x,y,w,h, centerX, centerY
-#
-#             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
-#     # print(detector.fingersUp())
-#
-#
-#
-#     cv2.imshow("lesson_2", frame)
-#     key = cv2.waitKey(1)
-#     if key == ord("q"):
-#         break
+    lmList, HandInfo = detector.findPosition(frame)
+    print(lmList)
+    print(HandInfo)
+    #lmList это наши точки на руке
+    # всего их 21 штука например 8 это верхняя часть указательного
+    # а 12 это верхняя часть среднего
+    print(len(lmList))
+    if len(lmList) != 0:
+        # print("lm", lmList[8])
+        x1, y1 = lmList[8]
+        x2, y2 = lmList[12]
+        # print(x1, y1, x2, y2)
+        # теперь посмотрим какие пальцы подняты
+        fingers = detector.fingersUp()
+        print(fingers)
+        # print(fingers)
+        # если указательный и средний подняты
+        if fingers[1] == 1 and fingers[2] ==1:
+            # тогда можем найти дистанцию между двумя нашими пальцами
+            length, img, lineInfo = detector.findDistance(8, 12, frame)
+            print(length)
+            print(lineInfo)
+            # lineInfo =  x,y,w,h, centerX, centerY
 
+            # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
+    # print(detector.fingersUp())
+
+
+
+    cv2.imshow("lesson_2", frame)
+    key = cv2.waitKey(1)
+    if key == ord("q"):
+        break
+
+########################   19   ########################
 
 ####### ВСЕ ЧТО НИЖЕ ОБЪЯСНИТЬ!!!!!!!!!!!!!!!!!!!!
 # Научимся рисовать при помощи пальца
@@ -430,6 +453,7 @@ import numpy as np
 #
 #
 
+########################   20   ########################
 
 # теперь сделаем управление мышкой с помощью наших пальцев
 # для этого импортируем библиотеку autopy

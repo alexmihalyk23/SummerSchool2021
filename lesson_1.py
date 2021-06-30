@@ -1,6 +1,6 @@
 #pip install opencv-python
 
-
+########################   1   ########################
 import cv2
 import numpy as np
 #Для начала научимся считывать кадры с камеры
@@ -38,6 +38,8 @@ import numpy as np
 #     cv2.imshow("lesson_1", frame)
 #     cv2.waitKey(1)
 
+########################   2   ########################
+
 #работа с cap.get и  cap.set
 # w=cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 # h=cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
@@ -63,6 +65,9 @@ import numpy as np
 #
 #     cv2.imshow("lesson_1", frame)
 #     cv2.waitKey(1)
+
+########################   3   ########################
+
 #Поработаем с трекбарами
 # import numpy as np
 #
@@ -93,6 +98,8 @@ import numpy as np
 #
 #     img[:] = [b,g,r]
 # cv2.destroyAllWindows()
+
+########################   4   ########################
 
 #Теперь мы знаем как работать с трекбарами и поэтому мы можем поработать с картинками
 
@@ -129,9 +136,10 @@ import numpy as np
 #         break
 # cv2.destroyAllWindows()
 
+########################   5   ########################
 
 #############
-
+# Наложение одной картинки на другую
 # img1 = cv2.imread('C:/Users/alexm/Pictures/english_1.png')
 # img2 = cv2.imread('mask.png')
 # img2 = cv2.resize(img2, (160,120))
@@ -159,6 +167,7 @@ import numpy as np
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 
+########################   6   ########################
 
 # поработаем с нажатием мышки
 # # получим кадр с камеры
@@ -191,6 +200,7 @@ import numpy as np
 #     cv2.setMouseCallback("lesson_1", MouseClick)
 #     cv2.waitKey(1)
 
+########################   7   ########################
 
 # теперь напишем кое-что интересное
 # импортируем библиотеку numpy для работы с массивами
@@ -243,6 +253,8 @@ import numpy as np
 #     elif key == ord("q"):
 #         break
 
+########################   8   ########################
+
 # Features Detector
 # Как вы собираете пазлы?
 #https://docs.opencv.org/3.4/df/d54/tutorial_py_features_meaning.html
@@ -250,56 +262,145 @@ import numpy as np
 
 #Для начала импортируем необходимые библиотеки и прочитаем два изображения
 import numpy as np
+# import cv2
+# cap = cv2.VideoCapture(0)
+#
+# img1 = cv2.imread('testF1.jpg')
+#
+# img2 = cv2.imread('testF2.jpg')
+#
+# # инициализируем наш детектор orb для нас он подойдет лучше всего, с остальными можно ознакомиться  в документации
+# orb = cv2.ORB_create(nfeatures=1000)
+# while True:
+#     imgweb = cap.read()[1]
+# # keypoints наши ключевые точки на изображении
+# # descriptor =
+# # первый параметр это наше изображение, второй это маска по которой будут определятся точки
+# # в нашем случае его у нас нет
+#     kp1, des1 = orb.detectAndCompute(img1, None)
+#     # kp2, des2 = orb.detectAndCompute(img2, None)
+#     kp2, des2 = orb.detectAndCompute(imgweb, None)
+#     # теперь для наглядности отобразим наши точки на изображении
+#     imgkp1 = cv2.drawKeypoints(img1, kp1,None)
+#     imgkp2 = cv2.drawKeypoints(imgweb, kp2,None)
+#
+#     #Что за дескрипторы
+#     #Дескрипторы находят фичи кадра, то есть ищет признаки на кадре
+#     print(des1.shape)
+#     print(des1[0])
+#     # тут мы используем метод грубого перебора для нахождения признаков на обоих изображениях
+#     #
+#     bf = cv2.BFMatcher()
+#     # так как у нас два изображения то 3 параметорм задаем 2
+#     matches = bf.knnMatch(des1,des2,2)
+#     # теперь найдем хорошие признаки, которые есть у обоих изображениях
+#     good = []
+#     for m,n in matches:
+#         # если дистанция первого кадра меньше 75% второго, то относим к хорошим
+#         # УТОЧНИТЬ
+#         if m.distance < 0.75 * n.distance:
+#             good.append([m])
+#         # print(f"m - {m.distance}, n - {n.distance}")
+#     print(len(good))
+#     # если хороших признаков больше 30, тогда мы можем предположить что кадр обнаружен
+#     if len(good) > 30:
+#         cv2.putText(imgweb, "blagodarnost", (50,50), cv2.FONT_HERSHEY_PLAIN, 3,(255,0,255))
+#     # для наглядности отобразим найденные признаки на обоих изображениях
+#     img3 = cv2.drawMatchesKnn(img1,kp1,imgweb,kp2,good,None)
+#
+#     cv2.imshow("img1", img1)
+#     cv2.imshow("imgkp1", imgkp1)
+#     cv2.imshow("imgkp2", imgweb)
+#     cv2.imshow("img2", img2)
+#     cv2.imshow("img3", img3)
+#
+#     cv2.waitKey(1)
+
+########################   9   ########################
+
+# теперь благодаря пролученным знаниям мы сделаем дополненную реальность
+
 import cv2
+import numpy as np
+import cvzone
+
+imgTarget = cv2.imread("C:/users/alexm/Pictures/testAR3.jpg")
 cap = cv2.VideoCapture(0)
+Video = cv2.VideoCapture("C:/Users/alexm/Pictures/testAR2.mp4")
 
-img1 = cv2.imread('testF1.jpg')
+detection = False
+frameCounter = 0
 
-img2 = cv2.imread('testF2.jpg')
+imgVideo = Video.read()[1]
+hT,wT,cT = imgTarget.shape
+imgVideo = cv2.resize(imgVideo, (wT,hT))
 
-# инициализируем наш детектор orb для нас он подойдет лучше всего, с остальными можно ознакомиться  в документации
 orb = cv2.ORB_create(nfeatures=1000)
+kp1, des1 = orb.detectAndCompute(imgTarget, None)
+# imgTarget = cv2.drawKeypoints(imgTarget, kp1,None)
+img2 = np.zeros([wT,hT])
+# imgWarp = np.zeros([wT,hT])
 while True:
-    imgweb = cap.read()[1]
-# keypoints наши ключевые точки на изображении
-# descriptor =
-# первый параметр это наше изображение, второй это маска по которой будут определятся точки
-# в нашем случае его у нас нет
-    kp1, des1 = orb.detectAndCompute(img1, None)
-    # kp2, des2 = orb.detectAndCompute(img2, None)
-    kp2, des2 = orb.detectAndCompute(imgweb, None)
-    # теперь для наглядности отобразим наши точки на изображении
-    imgkp1 = cv2.drawKeypoints(img1, kp1,None)
-    imgkp2 = cv2.drawKeypoints(imgweb, kp2,None)
 
-    #Что за дескрипторы
-    print(des1.shape)
-    print(des1[0])
+    ret, imgWebcam = cap.read()
+    imgAug = imgWebcam.copy()
+    kp2, des2 = orb.detectAndCompute(imgWebcam, None)
+    if detection ==False:
+        Video.set(cv2.CAP_PROP_POS_FRAMES,0)
+        frameCounter = 0
+    else:
+        if frameCounter == Video.get(cv2.CAP_PROP_FRAME_COUNT):
+            Video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            frameCounter = 0
+        ret, imgVideo = Video.read()
+        imgVideo = cv2.resize(imgVideo, (wT, hT))
 
+    # imgWebcam = cv2.drawKeypoints(imgWebcam, kp2, None)
     bf = cv2.BFMatcher()
-    matches = bf.knnMatch(des1,des2,2)
-
+    matches = bf.knnMatch(des1,des2,k=2)
     good = []
     for m,n in matches:
         if m.distance < 0.75 * n.distance:
-            good.append([m])
-        # print(f"m - {m.distance}, n - {n.distance}")
+            good.append(m)
     print(len(good))
+    imgFeatures = cv2.drawMatches(imgTarget,kp1,imgWebcam,kp2,good,None, flags=2)
+    if len(good) > 20:
+        detection = True
+        srcPts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1,1,2)
+        dstPts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+        matrix, mask = cv2.findHomography(srcPts, dstPts, cv2.RANSAC, 5)
+        print(matrix)
 
-    if len(good) > 30:
-        cv2.putText(imgweb, "blagodarnost", (50,50), cv2.FONT_HERSHEY_PLAIN, 3,(255,0,255))
+        pts = np.float32([[0,0],[0,hT],[wT,hT], [wT,0]]).reshape(-1,1,2)
+        dst = cv2.perspectiveTransform(pts,matrix)
+        img2 = cv2.polylines(imgWebcam,[np.int32(dst)],True,(255,0,255),3)
 
-    img3 = cv2.drawMatchesKnn(img1,kp1,imgweb,kp2,good,None)
+        imgWarp = cv2.warpPerspective(imgVideo,matrix,(imgWebcam.shape[1], imgWebcam.shape[0]))
 
-    cv2.imshow("img1", img1)
-    cv2.imshow("imgkp1", imgkp1)
-    cv2.imshow("imgkp2", imgweb)
+        maskNew = np.zeros((imgWebcam.shape[0], imgWebcam.shape[1]), np.uint8)
+        cv2.fillPoly(maskNew, [np.int32(dst)], (255,255,255))
+        maskInv = cv2.bitwise_not(maskNew)
+        imgAug = cv2.bitwise_and(imgAug,imgAug,mask=maskInv)
+        imgAug = cv2.bitwise_or(imgWarp,imgAug)
+
+        # StackedImages = cvzone.stackImages([imgWebcam,imgWarp,imgTarget, imgFeatures,imgWarp,imgAug],3, 0.5)
+
+
+    cv2.imshow("features", imgAug)
     cv2.imshow("img2", img2)
-    cv2.imshow("img3", img3)
+    cv2.imshow("imgWarp", imgFeatures)
+    # cv2.imshow("maskNew", imgAug)
+    # cv2.imshow("target", imgTarget)
+    # cv2.imshow("webcam", imgWebcam)
+    # cv2.imshow("video", imgVideo)
 
     cv2.waitKey(1)
+    frameCounter+=1
 
 
+
+
+######### НЕ ОБЯЗАТЕЛЬНО
 # filename = 'C:/users/alexm/Pictures/testAR3.jpg'
 # img = cv.imread(filename)
 # gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
