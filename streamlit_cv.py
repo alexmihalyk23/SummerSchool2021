@@ -18,7 +18,7 @@ st.markdown("""
         margin-left: -350px
         }
     </style>
-        
+
     """, unsafe_allow_html=True
             )
 
@@ -62,6 +62,8 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 app_mode = st.sidebar.selectbox("Выберите тип распознавания",["Начальная страница","обнаружение лица","face mesh"])
 
 if app_mode == "Начальная страница":
+    vid = cv2.VideoCapture(0)
+    vid.release()
     st.title("Давайте начнём")
 
     st.markdown("## На этом сайте вы можете ознакомиться с работой opencv")
@@ -69,31 +71,12 @@ if app_mode == "Начальная страница":
     st.video("C:/Users/alexm/Pictures/test_demo.mp4")
 
 if app_mode == "обнаружение лица":
-    use_webcam = st.sidebar.button("Камера")
-    detect_conf = st.sidebar.slider("Точность распознаваниея", min_value=0.1, value=0.5, max_value=1.0)
-    detector = FaceDetector(minDetectionCon=detect_conf)
-    img_file_buffer = st.sidebar.file_uploader("Вставить изображение", ["jpg", "jpeg", "png"])
-
-    if img_file_buffer is not None:
-        image = np.array(Image.open(img_file_buffer))
-    else:
-        image = np.array(Image.open(DEMO_IMAGE))
-    if use_webcam:
-        vid = cv2.VideoCapture(0)
-        image = vid.read()[1]
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        vid.release()
-    st.sidebar.image(image)
-    out_img, bboxs = detector.findFaces(image)
-    st.image(out_img)
-
-if app_mode == "face mesh":
     st.set_option('deprecation.showfileUploaderEncoding', False)
 
-    use_webcam = st.sidebar.button('Use Webcam')
-    record = st.sidebar.checkbox("Record Video")
+    use_webcam = st.sidebar.button('Использовать камеру')
+    record = st.sidebar.checkbox("Включить запись")
     if record:
-        st.checkbox("Recording", value=True)
+        st.checkbox("Запись", value=True)
 
     st.sidebar.markdown('---')
     st.markdown(
@@ -111,17 +94,12 @@ if app_mode == "face mesh":
         unsafe_allow_html=True,
     )
     # max faces
-    max_faces = st.sidebar.number_input('Maximum Number of Faces', value=1, min_value=1)
-    st.sidebar.markdown('---')
     detection_confidence = st.sidebar.slider('Min Detection Confidence', min_value=0.0, max_value=1.0, value=0.5)
-    tracking_confidence = st.sidebar.slider('Min Tracking Confidence', min_value=0.0, max_value=1.0, value=0.5)
 
-    st.sidebar.markdown('---')
-
-    st.markdown(' ## Output')
+    st.markdown(' ## Вывод')
 
     stframe = st.empty()
-    video_file_buffer = st.sidebar.file_uploader("Upload a video", type=["mp4", "mov", 'avi', 'asf', 'm4v'])
+    video_file_buffer = st.sidebar.file_uploader("Загрузить видео", type=["mp4", "mov", 'avi', 'asf', 'm4v'])
     tfflie = tempfile.NamedTemporaryFile(delete=False)
 
     if not video_file_buffer:
@@ -200,6 +178,99 @@ if app_mode == "face mesh":
     st.video(out_bytes)
 
     vid.release()
+    out.release()
+
+if app_mode == "face mesh":
+    st.set_option('deprecation.showfileUploaderEncoding', False)
+
+    use_webcam = st.sidebar.button('Использовать камеру')
+    record = st.sidebar.checkbox("Включить запись")
+    if record:
+        st.checkbox("Запись", value=True)
+
+    st.sidebar.markdown('---')
+    st.markdown(
+        """
+        <style>
+        [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+            width: 400px;
+        }
+        [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+            width: 400px;
+            margin-left: -400px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    # max faces
+    detection_confidence = st.sidebar.slider('Min Detection Confidence', min_value=0.0, max_value=1.0, value=0.5)
+
+    st.markdown(' ## Вывод')
+
+    stframe = st.empty()
+    video_file_buffer = st.sidebar.file_uploader("Загрузить видео", type=["mp4", "mov", 'avi', 'asf', 'm4v'])
+    tfflie = tempfile.NamedTemporaryFile(delete=False)
+
+    if not video_file_buffer:
+        if use_webcam:
+            vid = cv2.VideoCapture(0)
+        else:
+            vid = cv2.VideoCapture(DEMO_VIDEO)
+            tfflie.name = DEMO_VIDEO
+
+    else:
+        vid.release()
+        tfflie.write(video_file_buffer.read())
+        vid = cv2.VideoCapture(tfflie.name)
+
+    width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps_input = int(vid.get(cv2.CAP_PROP_FPS))
+
+    # codec = cv2.VideoWriter_fourcc(*FLAGS.output_format)
+    codec = cv2.VideoWriter_fourcc('V', 'P', '0', '9')
+    out = cv2.VideoWriter('output1.mp4', codec, fps_input, (width, height))
+
+    st.sidebar.text('Input Video')
+    st.sidebar.video(tfflie.name)
+    fps = 0
+    i = 0
+
+
+    detector = FaceMeshDetector(detection_confidence)
+    while vid.isOpened():
+        i += 1
+        ret, frame = vid.read()
+        if not ret:
+            continue
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        frame.flags.writeable = True
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+
+        face_count = 0
+        frame, bboxs = detector.findFaceMesh(frame)
+        # currTime = time.time()
+        # fps = 1 / (currTime - prevTime)
+        # prevTime = currTime
+        if record:
+            # st.checkbox("Recording", value=True)
+            out.write(frame)
+        # Dashboard
+        frame = cv2.resize(frame, (0, 0), fx=0.8, fy=0.8)
+        frame = image_resize(image=frame, width=640)
+        stframe.image(frame, channels='BGR', use_column_width=True)
+
+    st.text('Video Processed')
+
+    output_video = open('output1.mp4', 'rb')
+    out_bytes = output_video.read()
+    st.video(out_bytes)
+
+    vid.release()
+    vid.set(OPENCV_VIDEOIO_DEBUG=1)
     out.release()
 
 

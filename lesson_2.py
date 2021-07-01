@@ -166,7 +166,6 @@
 # from cvzone.FaceDetectionModule import FaceDetector
 # import cvzone
 # cap = cv2.VideoCapture(0)
-#
 # face_cascade = cv2.CascadeClassifier("haar.xml")
 # detector = FaceDetector(0.6)
 # # также сделаем счетчик кадров в секунду
@@ -192,6 +191,7 @@
 #     if key == ord("q"):
 #         break
 # cv2.destroyAllWindows()
+
 ########################   15   ########################
 
 # Задание сделать отслеживание лица, которое мы сделали с помощью каскада хаара, с помощью нейронной сети
@@ -518,7 +518,7 @@ import numpy as np
 #     key = cv2.waitKey(1)
 #     if key == ord("q"):
 #         break
-#
+
 
 
 
