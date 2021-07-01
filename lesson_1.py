@@ -1,8 +1,39 @@
 # pip install opencv-python
+# что такое изображение
+#  по сути изображение это массив в котором лежит цвет кажлого пикселя
+# по этому мы можем создать свое изображение
 
 ########################   1   ########################
 import cv2
 import numpy as np
+# import numpy as np
+#
+# imgZ = np.zeros((640,480,3))
+# # imgZ.
+# imgZ.fill(0.69)
+# imgZ[100][100][0] = np.random.randint(0,255)/255.0
+# imgZ[100][101][1] = np.random.randint(0,255)/255.0
+# imgZ[100][102][2] = np.random.randint(0,255)/255.0
+# imgZ[100][103][0] = np.random.randint(0,255)/255.0
+# for i in range(40,100):
+#     for j in range(40,100):
+#         imgZ[i][j][0] = 128
+#
+#         imgZ[i][j][1] = 20
+#
+#         imgZ[i][j][2] =200
+#
+# # также мы можем выполнять все операции opencv над этим изображением
+# # imgZ = cv2.resize(imgZ, (640,480))
+# imgZ = cv2.rectangle(imgZ, (100,40),(160,100),(255,0,255), -1)
+#
+# print(imgZ.shape)
+# print(imgZ)
+# print(imgZ[1][0])
+# cv2.imshow("imgZ", imgZ)
+# cv2.waitKey(0)
+# print(imgZ)
+
 # Для начала научимся считывать кадры с камеры
 
 # cap = cv2.VideoCapture(0)
@@ -37,35 +68,6 @@ import numpy as np
 #
 #     cv2.imshow("lesson_1", frame)
 #     cv2.waitKey(1)
-
-# также мы и сами можем создать изображение, ведь изображение это всего лишь массив из чисел
-# import numpy as np
-#
-# imgZ = np.zeros((640,480,3))
-# # imgZ.
-# imgZ.fill(0.69)
-# imgZ[100][100][0] = np.random.randint(0,255)/255.0
-# imgZ[100][101][1] = np.random.randint(0,255)/255.0
-# imgZ[100][102][2] = np.random.randint(0,255)/255.0
-# imgZ[100][103][0] = np.random.randint(0,255)/255.0
-# for i in range(40,100):
-#     for j in range(40,100):
-#         imgZ[i][j][0] = 128
-#
-#         imgZ[i][j][1] = 20
-#
-#         imgZ[i][j][2] =200
-#
-# # также мы можем выполнять все операции opencv над этим изображением
-# # imgZ = cv2.resize(imgZ, (640,480))
-# imgZ = cv2.rectangle(imgZ, (100,40),(160,100),(255,0,255), -1)
-#
-# print(imgZ.shape)
-# print(imgZ)
-# print(imgZ[1][0])
-# cv2.imshow("imgZ", imgZ)
-# cv2.waitKey(0)
-# print(imgZ)
 
 ########################   2   ########################
 
@@ -186,7 +188,10 @@ import numpy as np
 # print(mask_inv)
 # # !!!!! Дописать
 # # Now black-out the area of logo in ROI
+# print(roi)
+# print("mask",mask_inv)
 # img1_bg = cv2.bitwise_and(roi,roi,mask = mask_inv)
+# print("img_bg", img1_bg)
 # # Take only region of logo from logo image.
 # img2_fg = cv2.bitwise_and(img2,img2,mask = mask)
 # # Put logo in ROI and modify the main image
@@ -205,7 +210,7 @@ import numpy as np
 # # coordinates = np.zeros((1,2), np.int)
 # #создадим массив coordinates
 # coordinates = []
-# создадим функцию, которая будет возвращать координаты где мы нажали на левую кнопку мыши
+# #создадим функцию, которая будет возвращать координаты где мы нажали на левую кнопку мыши
 # def MouseClick(event, x, y, flags, params):
 #     # если событие равно нажатию левой кнопкой мыши
 #     if event == cv2.EVENT_LBUTTONDOWN:
