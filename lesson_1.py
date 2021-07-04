@@ -6,40 +6,123 @@
 ########################   1   ########################
 import cv2
 import numpy as np
-# import numpy as np
 #
-# imgZ = np.zeros((640,480,3))
+# imgZ = np.zeros((640, 480, 3))
 # # imgZ.
+#
+# imgZ[100][100][0] = np.random.randint(0, 255) / 255.0
+# imgZ[100][101][1] = np.random.randint(0, 255) / 255.0
+# imgZ[100][102][2] = np.random.randint(0, 255) / 255.0
+# imgZ[100][103][0] = np.random.randint(0, 255) / 255.0
+#uint8 Целые числа в диапазоне от 0 по 255 (числа размером 1 байт).
+imgZ = np.zeros([640, 480, 3], np.uint8)
+# colorized =
+
 # imgZ.fill(0.69)
-# imgZ[100][100][0] = np.random.randint(0,255)/255.0
-# imgZ[100][101][1] = np.random.randint(0,255)/255.0
-# imgZ[100][102][2] = np.random.randint(0,255)/255.0
-# imgZ[100][103][0] = np.random.randint(0,255)/255.0
-# for i in range(40,100):
-#     for j in range(40,100):
-#         imgZ[i][j][0] = 128
-#
-#         imgZ[i][j][1] = 20
-#
-#         imgZ[i][j][2] =200
-#
-# # также мы можем выполнять все операции opencv над этим изображением
+# Благодаря срезу мы можем менять только цвет, так как у нас массив состоит из
+# 640 на 480 на 3
+# где три это цвета RGB
+# 0 - B 1 - G 2 - R
+# imgZ[:,:,0]=255
+# imgZ[:,:,1] = 0
+# imgZ[:,:,2] = 0
+# # imgZ[:,:,:] = 128
+# print(imgZ[:,:,:])
+# print(imgZ[:,:,0])
+# # print(imgZ[:, :, 0])
+# # # также мы можем выполнять все операции opencv над этим изображением
 # # imgZ = cv2.resize(imgZ, (640,480))
-# imgZ = cv2.rectangle(imgZ, (100,40),(160,100),(255,0,255), -1)
+# # # Рисование прямоугольника
+# #
+# # imgZ = cv2.rectangle(imgZ, (100, 40), (160, 100), (255, 0, 255), -1)
+# # # рисование круга
+# # imgZ = cv2.circle(imgZ, (130, 70), 3, (255, 0, 0), -1)
+# # # написание текста на изображнии
+# # imgZ = cv2.putText(imgZ,"hello",(0,40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,255), 1)
+# # # стрелочка
+# # imgZ = cv2.arrowedLine(imgZ,(20,40),(50,100),(200,0,0))
 #
-# print(imgZ.shape)
-# print(imgZ)
-# print(imgZ[1][0])
+#
+# # imgZ = cv2.drawMarker(imgZ, (200,200),(255,0,0), cv2.MARKER_DIAMOND)
+# #
+# # print(imgZ.shape)
+# # print(imgZ)
+# # print(imgZ[1][0])
 # cv2.imshow("imgZ", imgZ)
 # cv2.waitKey(0)
+
+# Двоеточие в массиве это срез
+# for i in range(0,600):
+#     for j in range(0,400):
+# теперь поподробнее про срез,
+# мы можем выбрать в какой части массива(нашей картинке) будет какой-нибудь другой цвет
+# import math
+# x,y,w,h = 0,100,200,200
+# imgZ[:,:,:] = 100
+# # imgZ[100:200,10,2] = 255
+#
+# imgZ[y:y+h,x:x+w,1] = np.random.randint(0, 255)
+# # imgZ[y+w,x,2] = 255
+# # imgZ[:,:,1] = np.random.randint(0, 255)
+# # imgZ[:,:,2] = np.random.randint(0, 255)
+# img = cv2.imread("testF2.jpg")
+# # print(img)
+# # print(img[:,:,0])
+# # imgZ = np.zeros([640, 480, 3])
+# # imgZ.fill(0.69)
+# imgZ = np.array(img[20:200,40:500])
+# # cv2.circle()
+# cv2.imshow("frame", imgZ)
+# cv2.waitKey(0)
+
+#
+# import cv2
+# import numpy as np
+#
+# imgZ = np.zeros((640, 480, 3))
+# # imgZ.
+# posX = 0
+# posY = 40
+# # Немного подробнее о waitkey
+# while True:
+#     key = cv2.waitKey(1)
+#     if key != 27 and key != -1 and key != 8:
+#         imgZ = cv2.putText(imgZ,str(chr(key)),(posX,posY), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,255), 1)
+#         posX+=15
+#         if posX >= 480:
+#             posX = 0
+#             posY = posY + 40
+#             imgZ = cv2.putText(imgZ, str(chr(key)), (posX, posY), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1)
+#
+#     #
+#     # print(imgZ.shape)
+#     # print(imgZ)
+#     # print(imgZ[1][0])
+#     cv2.imshow("imgZ", imgZ)
+#     if key == 27:
+#         break
+#
+
+
+
+
+
 # print(imgZ)
 
 # Для начала научимся считывать кадры с камеры
 
 # cap = cv2.VideoCapture(0)
-# также можно получать кадры и из видео
-# cap = cv2.VideoCapture("путь_к_файлу")
+# # также можно получать кадры и из видео
+# # cap = cv2.VideoCapture("testF1.jpg")
 # ret, frame = cap.read()
+# x,y,w,h = 20,20,280,380
+# # так как это массив чисел мы можем взять конкретную часть изображения
+# crop = frame[y:y+h, x:x+w]
+# #нарисуем прямоугольник на изображении для наглядности возьем те же
+# # координаты что и для кропа
+# frame = cv2.rectangle(frame, (x,y),(x+w,y+h),(244,2,0))
+#
+# cv2.imshow("crop", crop)
 # cv2.imshow("lesson_1", frame)
 # cv2.waitKey(0)
 
@@ -48,8 +131,171 @@ import numpy as np
 # cv2.imshow("image", image)
 # cv2.waitKey(0)
 
-# теперь будем постоянно опрашивать камеру
+
+# Поработаем с трекбарами
+import numpy as np
 #
+# #для начала с помощью библиотеки numpy создадим изображение
+# img = np.zeros((480,640,3), np.uint8)
+# # #назовем наше окно как lesson_1
+# cv2.namedWindow('lesson_1')
+# # Теперь создадим трекбар для изменения цвета
+# # первый параметр это название трекбара, второй - окно, на котором будет отображаться трекбар,
+# #третий - начальное значение, четвертый - конечное значение, пятый - функция обратного вызова,
+# # которая выполняется. каждый раз, когда значение трекбара изменяется
+# # на данный момент мы создадим пустую функцию, которая будет делать "Ничего"
+#
+# def nothing(x):
+#     pass
+# cv2.createTrackbar('R','lesson_1',0,255,nothing)
+# cv2.createTrackbar('G','lesson_1',0,255,nothing)
+# cv2.createTrackbar('B','lesson_1',0,255,nothing)
+#
+# print(img[:])
+# while(1):
+#     cv2.imshow('lesson_1',img)
+#     k = cv2.waitKey(1) & 0xFF
+#     if k == 27:
+#         break
+#     # get current positions of four trackbars
+#     r = cv2.getTrackbarPos('R','lesson_1')
+#     g = cv2.getTrackbarPos('G','lesson_1')
+#     b = cv2.getTrackbarPos('B','lesson_1')
+#
+#     img[:] = [b,g,r]
+# cv2.destroyAllWindows()
+
+
+# поработаем с нажатием мышки
+# # получим кадр с камеры
+# img = np.zeros((640,480,3))
+# # coordinates = np.zeros((1,2), np.int)
+# #создадим массив coordinates
+# coordinates = []
+# #создадим функцию, которая будет возвращать координаты где мы нажали на левую кнопку мыши
+# def MouseClick(event, x, y, flags, params):
+#     # если событие равно нажатию левой кнопкой мыши
+#     if event == cv2.EVENT_LBUTTONDOWN:
+#         #добавляем координаты x и y в наш массив
+#         coordinates.append(x)
+#         coordinates.append(y)
+#         print(coordinates)
+#
+#
+# while True:
+#     print(len(coordinates))
+#     # если координаты есть
+#     if len(coordinates) !=0:
+#         # нарисуем круг по нашим координатам
+#         cv2.circle(img, (coordinates[0], coordinates[1]), 5, (0, 0, 200), -1)
+#         # очистим наш массив, чтобы мы могли его снова заполнить
+#         coordinates.clear()
+#
+#     cv2.imshow("lesson_1", img)
+#     # и вызываем нашу функцию по нажатию мыши
+#     cv2.setMouseCallback("lesson_1", MouseClick)
+#     cv2.waitKey(1)
+#
+# # теперь мы знаем как отслеживать нажатие клавишы мыши и что такое трекбар
+#
+# # Задание, сделать аналог paint
+#
+# cv2.namedWindow('lesson_1')
+# img = np.zeros((480,640,3), np.uint8)
+#
+# # img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+# # coordinates = np.zeros((1,2), np.int)
+# #создадим массив coordinates
+# coordinates = []
+# drawing = False
+# r,g,b = 0,0,0
+# radius = 0
+# #создадим функцию, которая будет возвращать координаты где мы нажали на левую кнопку мыши
+# def MouseClick(event, x, y, flags, params):
+#     global drawing, r,g,b, radius, color
+#     # если событие равно нажатию левой кнопкой мыши
+#     if event == cv2.EVENT_LBUTTONDOWN:
+#         #добавляем координаты x и y в наш массив
+#         drawing = True
+#         coordinates.append(x)
+#         coordinates.append(y)
+#         print(coordinates)
+#     elif event == cv2.EVENT_MOUSEMOVE:
+#         if drawing == True:
+#             if cleaning == False:
+#                 cv2.circle(img, (x,y), radius,(b,g,r),-1)
+#             else:
+#                 cv2.circle(img, (x, y), radius, (0, 0, 0), -1)
+#     elif event == cv2.EVENT_LBUTTONUP:
+#         drawing = False
+#
+# def nothing(x):
+#     pass
+# cv2.createTrackbar('R','lesson_1',0,255,nothing)
+# cv2.createTrackbar('G','lesson_1',0,255,nothing)
+# cv2.createTrackbar('B','lesson_1',0,255,nothing)
+# cv2.createTrackbar('Radius','lesson_1',0,100,nothing)
+# cv2.createTrackbar('cleaning','lesson_1',False,True,nothing)
+#
+# while True:
+#     print(len(coordinates))
+#     # если координаты есть
+#     r = cv2.getTrackbarPos('R', 'lesson_1')
+#     g = cv2.getTrackbarPos('G','lesson_1')
+#     b = cv2.getTrackbarPos('B','lesson_1')
+#     radius = cv2.getTrackbarPos('Radius', 'lesson_1')
+#     cleaning = cv2.getTrackbarPos('cleaning', 'lesson_1')
+#     if len(coordinates) !=0:
+#         # нарисуем круг по нашим координатам
+#         cv2.circle(img, (coordinates[0], coordinates[1]), radius, (b, g,r), -1)
+#         # очистим наш массив, чтобы мы могли его снова заполнить
+#         coordinates.clear()
+#
+#     cv2.imshow("lesson_1", img)
+#     # и вызываем нашу функцию по нажатию мыши
+#     cv2.setMouseCallback("lesson_1", MouseClick)
+#     cv2.waitKey(1)
+#
+# # Доп задание сделать рисование по зажатой клавише мыши
+#
+# def MouseClick(event, x, y, flags, params):
+#     # если событие равно нажатию левой кнопкой мыши
+#     if event == cv2.EVENT_LBUTTONDOWN:
+#         #добавляем координаты x и y в наш массив
+#         coordinates.append(x)
+#         coordinates.append(y)
+#         print(coordinates)
+#
+# def nothing(x):
+#     pass
+# cv2.createTrackbar('R','lesson_1',0,255,nothing)
+# cv2.createTrackbar('G','lesson_1',0,255,nothing)
+# cv2.createTrackbar('B','lesson_1',0,255,nothing)
+# cv2.createTrackbar('Radius','lesson_1',0,100,nothing)
+#
+#
+# while True:
+#     print(len(coordinates))
+#     # если координаты есть
+#     r = cv2.getTrackbarPos('R', 'lesson_1')
+#     g = cv2.getTrackbarPos('G','lesson_1')
+#     b = cv2.getTrackbarPos('B','lesson_1')
+#     radius = cv2.getTrackbarPos('Radius', 'lesson_1')
+#     if len(coordinates) !=0:
+#         # нарисуем круг по нашим координатам
+#         cv2.circle(img, (coordinates[0], coordinates[1]), radius, (b, g,r), -1)
+#         # очистим наш массив, чтобы мы могли его снова заполнить
+#         coordinates.clear()
+#
+#     cv2.imshow("lesson_1", img)
+#     # и вызываем нашу функцию по нажатию мыши
+#     cv2.setMouseCallback("lesson_1", MouseClick)
+#     cv2.waitKey(1)
+
+
+
+# теперь будем постоянно опрашивать камеру
+
 # cap = cv2.VideoCapture(0)
 #
 # while True:
@@ -59,19 +305,19 @@ import numpy as np
 #     cv2.rectangle(frame, (x,y),(x+w,y+h), (200,22,222), -1)
 #     cv2.circle(frame, (400,400),9,(200,255,22),-1)
 #     cv2.line(frame,(0,0),(300,300),(200,22,22))
+#     crop = frame[y:y+h+200,x:x+w+100]
 #
-#     #Задание найти центр прямоугольника
+#     #Задание найти центр прямоугольника и нарисовать круг
 #
-#     cv2.circle(frame,((x+x+w)//2,(y+y+h)//2),i,(0,255,0),-1)
-#
-#
-#
+#     cv2.circle(frame,((x+x+w)//2,(y+y+h)//2),1,(0,255,0),-1)
+#     cv2.imshow("crop", crop)
 #     cv2.imshow("lesson_1", frame)
 #     cv2.waitKey(1)
 
 ########################   2   ########################
 
 # работа с cap.get и  cap.set
+# cap = cv2.VideoCapture(0)
 # w=cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 # h=cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 # print(w,h)
@@ -99,36 +345,7 @@ import numpy as np
 
 ########################   3   ########################
 
-# Поработаем с трекбарами
-# import numpy as np
-#
-# #для начала с помощью библиотеки numpy создадим изображение
-# img = np.zeros((300,512,3), np.uint8)
-# # #назовем наше окно как lesson_1
-# cv2.namedWindow('lesson_1')
-# # Теперь создадим трекбар для изменения цвета
-# # первый параметр это название трекбара, второй - окно, на котором будет отображаться трекбар,
-# #третий - начальное значение, четвертый - конечное значение, пятый - функция обратного вызова,
-# # которая выполняется. каждый раз, когда значение трекбара изменяется
-# # на данный момент мы создадим пустую функцию, которая будет делать "Ничего"
-#
-# def nothing(x):
-#     pass
-# cv2.createTrackbar('R','lesson_1',0,255,nothing)
-# cv2.createTrackbar('G','lesson_1',0,255,nothing)
-# cv2.createTrackbar('B','lesson_1',0,255,nothing)
-# while(1):
-#     cv2.imshow('lesson_1',img)
-#     k = cv2.waitKey(1) & 0xFF
-#     if k == 27:
-#         break
-#     # get current positions of four trackbars
-#     r = cv2.getTrackbarPos('R','lesson_1')
-#     g = cv2.getTrackbarPos('G','lesson_1')
-#     b = cv2.getTrackbarPos('B','lesson_1')
-#
-#     img[:] = [b,g,r]
-# cv2.destroyAllWindows()
+
 
 ########################   4   ########################
 
@@ -203,36 +420,7 @@ import numpy as np
 
 ########################   6   ########################
 
-# поработаем с нажатием мышки
-# # получим кадр с камеры
-# cap = cv2.VideoCapture(0)
-# ret, img = cap.read()
-# # coordinates = np.zeros((1,2), np.int)
-# #создадим массив coordinates
-# coordinates = []
-# #создадим функцию, которая будет возвращать координаты где мы нажали на левую кнопку мыши
-# def MouseClick(event, x, y, flags, params):
-#     # если событие равно нажатию левой кнопкой мыши
-#     if event == cv2.EVENT_LBUTTONDOWN:
-#         #добавляем координаты x и y в наш массив
-#         coordinates.append(x)
-#         coordinates.append(y)
-#         print(coordinates)
-#
-#
-# while True:
-#     print(len(coordinates))
-#     # если координаты есть
-#     if len(coordinates) !=0:
-#         # нарисуем круг по нашим координатам
-#         cv2.circle(img, (coordinates[0], coordinates[1]), 5, (0, 0, 200), -1)
-#         # очистим наш массив, чтобы мы могли его снова заполнить
-#         coordinates.clear()
-#
-#     cv2.imshow("lesson_1", img)
-#     # и вызываем нашу функцию по нажатию мыши
-#     cv2.setMouseCallback("lesson_1", MouseClick)
-#     cv2.waitKey(1)
+
 
 ########################   7   ########################
 
@@ -354,83 +542,83 @@ import numpy as np
 
 # теперь благодаря пролученным знаниям мы сделаем дополненную реальность
 
-import cv2
-import numpy as np
-import cvzone
-
-imgTarget = cv2.imread("C:/users/alexm/Pictures/testAR3.jpg")
-cap = cv2.VideoCapture(0)
-Video = cv2.VideoCapture("C:/Users/alexm/Pictures/testAR2.mp4")
-
-detection = False
-frameCounter = 0
-
-imgVideo = Video.read()[1]
-hT, wT, cT = imgTarget.shape
-imgVideo = cv2.resize(imgVideo, (wT, hT))
-
-orb = cv2.ORB_create(nfeatures=1000)
-kp1, des1 = orb.detectAndCompute(imgTarget, None)
-# imgTarget = cv2.drawKeypoints(imgTarget, kp1,None)
-img2 = np.zeros([wT, hT])
-# imgWarp = np.zeros([wT,hT])
-while True:
-
-    ret, imgWebcam = cap.read()
-    imgAug = imgWebcam.copy()
-    kp2, des2 = orb.detectAndCompute(imgWebcam, None)
-    if detection == False:
-        Video.set(cv2.CAP_PROP_POS_FRAMES, 0)
-        frameCounter = 0
-    else:
-        if frameCounter == Video.get(cv2.CAP_PROP_FRAME_COUNT):
-            Video.set(cv2.CAP_PROP_POS_FRAMES, 0)
-            frameCounter = 0
-        ret, imgVideo = Video.read()
-        imgVideo = cv2.resize(imgVideo, (wT, hT))
-
-    # imgWebcam = cv2.drawKeypoints(imgWebcam, kp2, None)
-    bf = cv2.BFMatcher()
-    matches = bf.knnMatch(des1, des2, k=2)
-    good = []
-    for m, n in matches:
-        if m.distance < 0.75 * n.distance:
-            good.append(m)
-    print(len(good))
-    imgFeatures = cv2.drawMatches(imgTarget, kp1, imgWebcam, kp2, good, None, flags=2)
-    if len(good) > 20:
-        detection = True
-        # ОБЪЯСНИТЬ
-        # https://docs.opencv.org/4.5.2/db/d27/tutorial_py_table_of_contents_feature2d.html
-        srcPts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
-        dstPts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
-        matrix, mask = cv2.findHomography(srcPts, dstPts, cv2.RANSAC, 5)
-        print(matrix)
-
-        pts = np.float32([[0, 0], [0, hT], [wT, hT], [wT, 0]]).reshape(-1, 1, 2)
-        dst = cv2.perspectiveTransform(pts, matrix)
-        img2 = cv2.polylines(imgWebcam, [np.int32(dst)], True, (255, 0, 255), 3)
-
-        imgWarp = cv2.warpPerspective(imgVideo, matrix, (imgWebcam.shape[1], imgWebcam.shape[0]))
-
-        maskNew = np.zeros((imgWebcam.shape[0], imgWebcam.shape[1]), np.uint8)
-        cv2.fillPoly(maskNew, [np.int32(dst)], (255, 255, 255))
-        maskInv = cv2.bitwise_not(maskNew)
-        imgAug = cv2.bitwise_and(imgAug, imgAug, mask=maskInv)
-        imgAug = cv2.bitwise_or(imgWarp, imgAug)
-
-        # StackedImages = cvzone.stackImages([imgWebcam,imgWarp,imgTarget, imgFeatures,imgWarp,imgAug],3, 0.5)
-
-    cv2.imshow("features", imgAug)
-    cv2.imshow("img2", img2)
-    cv2.imshow("imgWarp", imgFeatures)
-    cv2.imshow("maskNew", imgWarp)
-    # cv2.imshow("target", imgTarget)
-    # cv2.imshow("webcam", imgWebcam)
-    # cv2.imshow("video", imgVideo)
-
-    cv2.waitKey(1)
-    frameCounter += 1
+# import cv2
+# import numpy as np
+# import cvzone
+#
+# imgTarget = cv2.imread("C:/users/alexm/Pictures/testAR3.jpg")
+# cap = cv2.VideoCapture(0)
+# Video = cv2.VideoCapture("C:/Users/alexm/Pictures/testAR2.mp4")
+#
+# detection = False
+# frameCounter = 0
+#
+# imgVideo = Video.read()[1]
+# hT, wT, cT = imgTarget.shape
+# imgVideo = cv2.resize(imgVideo, (wT, hT))
+#
+# orb = cv2.ORB_create(nfeatures=1000)
+# kp1, des1 = orb.detectAndCompute(imgTarget, None)
+# # imgTarget = cv2.drawKeypoints(imgTarget, kp1,None)
+# img2 = np.zeros([wT, hT])
+# # imgWarp = np.zeros([wT,hT])
+# while True:
+#
+#     ret, imgWebcam = cap.read()
+#     imgAug = imgWebcam.copy()
+#     kp2, des2 = orb.detectAndCompute(imgWebcam, None)
+#     if detection == False:
+#         Video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+#         frameCounter = 0
+#     else:
+#         if frameCounter == Video.get(cv2.CAP_PROP_FRAME_COUNT):
+#             Video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+#             frameCounter = 0
+#         ret, imgVideo = Video.read()
+#         imgVideo = cv2.resize(imgVideo, (wT, hT))
+#
+#     # imgWebcam = cv2.drawKeypoints(imgWebcam, kp2, None)
+#     bf = cv2.BFMatcher()
+#     matches = bf.knnMatch(des1, des2, k=2)
+#     good = []
+#     for m, n in matches:
+#         if m.distance < 0.75 * n.distance:
+#             good.append(m)
+#     print(len(good))
+#     imgFeatures = cv2.drawMatches(imgTarget, kp1, imgWebcam, kp2, good, None, flags=2)
+#     if len(good) > 20:
+#         detection = True
+#         # ОБЪЯСНИТЬ
+#         # https://docs.opencv.org/4.5.2/db/d27/tutorial_py_table_of_contents_feature2d.html
+#         srcPts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+#         dstPts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+#         matrix, mask = cv2.findHomography(srcPts, dstPts, cv2.RANSAC, 5)
+#         print(matrix)
+#
+#         pts = np.float32([[0, 0], [0, hT], [wT, hT], [wT, 0]]).reshape(-1, 1, 2)
+#         dst = cv2.perspectiveTransform(pts, matrix)
+#         img2 = cv2.polylines(imgWebcam, [np.int32(dst)], True, (255, 0, 255), 3)
+#
+#         imgWarp = cv2.warpPerspective(imgVideo, matrix, (imgWebcam.shape[1], imgWebcam.shape[0]))
+#
+#         maskNew = np.zeros((imgWebcam.shape[0], imgWebcam.shape[1]), np.uint8)
+#         cv2.fillPoly(maskNew, [np.int32(dst)], (255, 255, 255))
+#         maskInv = cv2.bitwise_not(maskNew)
+#         imgAug = cv2.bitwise_and(imgAug, imgAug, mask=maskInv)
+#         imgAug = cv2.bitwise_or(imgWarp, imgAug)
+#
+#         # StackedImages = cvzone.stackImages([imgWebcam,imgWarp,imgTarget, imgFeatures,imgWarp,imgAug],3, 0.5)
+#
+#     cv2.imshow("features", imgAug)
+#     cv2.imshow("img2", img2)
+#     cv2.imshow("imgWarp", imgFeatures)
+#     cv2.imshow("maskNew", imgWarp)
+#     # cv2.imshow("target", imgTarget)
+#     # cv2.imshow("webcam", imgWebcam)
+#     # cv2.imshow("video", imgVideo)
+#
+#     cv2.waitKey(1)
+#     frameCounter += 1
 
 ######### НЕ ОБЯЗАТЕЛЬНО
 # filename = 'C:/users/alexm/Pictures/testAR3.jpg'
@@ -445,3 +633,57 @@ while True:
 # cv.imshow('dst',img)
 # if cv.waitKey(0) & 0xff == 27:
 #     cv.destroyAllWindows()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import time
+# cv2.namedWindow('lesson_1')
+# img = np.zeros((640,480,3), np.uint8)
+# counter = 0
+# shade_of_blue = [0,0,0,0,0]
+# for i in range(0,5):
+#     shade_of_blue[i] = np.random.randint(0, 255)
+# posX, posY = np.random.randint(1, 440), np.random.randint(1, 600)
+# # def lerp(a,b,t):
+# #     return b-a
+# counter = 40
+# counter1 = 255
+# while True:
+#     # color = list(np.random.random(size=3) * 256)
+#     # for i in range(0, 40):
+#     # print(blue)
+#     # for i in range(40,255):
+#     # cv2.circle(img, (posX,posY),40,(counter,0,0), -1)
+#     # print(counter)
+#     # counter+=1
+#     # if counter == 40:
+#     counter+=1
+#     cv2.circle(img, (posX, posY), 40, (counter, 0, 0), -1)
+#     print("111111111", counter)
+#     if counter == 255:
+#         # counter = 40
+#         cv2.circle(img, (posX,posY),40,(counter1,0,0), -1)
+#         print("ffffffffff", counter1)
+#         counter1-=1
+#         # break
+#
+#
+#     cv2.imshow("lesson_1", img)
+#     key = cv2.waitKey(1)
+#     if key == ord("q"):
+#         break

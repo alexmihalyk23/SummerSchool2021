@@ -1,4 +1,71 @@
 ########################   10   ########################
+# install opencv contrib python
+# трекинг выбранного объекта
+import cv2
+import numpy as np
+#
+# cap = cv2.VideoCapture(0)
+# # для работы трекера нам необходимо скачать
+# # opencv-contrib-python
+# # tracker = cv2.TrackerMOSSE_create()
+# tracker = cv2.TrackerCSRT_create()
+# # читаем первый кадр
+# ret, frame = cap.read()
+# # selectROI - прямоугольная точка интереса
+# # 1 параметр название окна
+# # (напишем tracker чтобы отображалось в том же окне)
+# # 2 параметр наше изображение
+# # 3 параметр чтобы мы могли выбирать прямоугольник интереса
+# # с левого верхнего до правого нижнего(у некооторых может работать неправильно)
+# # из-за true
+# bbox = cv2.selectROI("tracker", frame, False)
+# print(type(bbox))
+# print(bbox)
+# # # теперь давайте кропнем нашу выбранную часть
+# x,y,w,h = int(bbox[0]),int(bbox[1]), int(bbox[2]), int(bbox[3])
+# imgCrop = frame[y:y+h,x:x+w]
+# cv2.imshow("crop", imgCrop)
+# cv2.waitKey(0)
+#
+# # Инициализируйте трекер с помощью известного ограничивающего прямоугольника, который окружал цель
+# # принимает параметры 1- изображение 2- наш ограничивающий прямоугольник
+# tracker.init(frame, bbox)
+# # теперь попробуем на видео, для удобства создадим функцию
+# def drawBox(img, bbox):
+#     # передаем наши координаты
+#     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
+#     # рисуем прямоугольник
+#     cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 255), 3, 1)
+#     # выводим надпись tracking
+#     cv2.putText(img, "Tracking", (0, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+#
+#
+# while True:
+#     # создадим счетчик fps
+#     # возвращает количество тактов в секунду с момента объявления
+#     timer = cv2.getTickCount()
+#     # читаем следующие кадры
+#     ret, frame = cap.read()
+#     # также обновляем наш bbox
+#     # Обновите трекер, найдите новую наиболее вероятную ограничивающую рамку для цели.
+#     success, bbox = tracker.update(frame)
+#     if success:
+#         # если на кадре обнаружена цель трекинга
+#         # выполнить функцию
+#         drawBox(frame, bbox)
+#     else:
+#         # иначе вывести потерю
+#         cv2.putText(frame, "Lost", (0, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+#     # возвращает частоту тактов или количество тактов в секунду.
+#     # чтобы посчитать количество кадров можем написать так
+#     fps = cv2.getTickFrequency() / (cv2.getTickCount() - timer)
+#     # пишем количество кадров в секунду
+#     cv2.putText(frame, str(int(fps)), (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 128), 2)
+#     cv2.imshow("tracker", frame)
+#
+#     if cv2.waitKey(1) & 0xFF == ord("q"):
+#         break
+
 
 # # сегодня познакомимся с каскадом хаара
 # import cv2
@@ -95,7 +162,7 @@
 # mp_drawing = mp.solutions.drawing_utils
 # # For webcam input:
 # cap = cv2.VideoCapture(0)
-## тут в FaceDetection можно передать параметр точноти распознавания лица
+# # тут в FaceDetection можно передать параметр точноти распознавания лица
 # with mp_face_detection.FaceDetection() as face_detection:
 #   while cap.isOpened():
 #     success, image = cap.read()
@@ -124,14 +191,11 @@
 # cap.release()
 
 
-
-
-
 ########################   13   ########################
 
 # теперь познакомимся с более удобной библиотекой для работы с mediapipe
-#cvzone pip install cvzone
-#из библиотеки cvzone импортируем FaceDetector, который мы изучили ранее
+# cvzone pip install cvzone
+# из библиотеки cvzone импортируем FaceDetector, который мы изучили ранее
 # from cvzone.FaceDetectionModule import FaceDetector
 # import cv2
 #
@@ -257,7 +321,7 @@
 # мы уже научились работать с нашей основной камерой но что если мы хотим вывести изображение
 # допустим в google meet
 # мы можем создать виртуальную камеру, которую потом сможем испольщавать как основную
-
+#
 # import cv2
 # import pyvirtualcam
 #
@@ -303,7 +367,7 @@
 #
 #
 #         #       Далее мы сделаем проверку если центр лица находится не в диапазоне центра ROI тогда
-#             if not (CenterFace[0] in range(CenterROI[0] - 5, CenterROI[0] + 10) and CenterFace[1] in range(CenterROI[1] - 5,
+#             if not (CenterFace[0] in range(CenterROI[0] - 10, CenterROI[0] + 10) and CenterFace[1] in range(CenterROI[1] - 5,
 #                                                                                                            CenterROI[
 #                                                                                                                1] + 10)):
 #         #       изменяем кроп кадра, высчитывая разность центров
@@ -330,9 +394,6 @@
 #
 
 
-
-
-
 ########################   17   ########################
 
 # import cv2
@@ -345,6 +406,7 @@
 #
 # while True:
 #     ret, frame = cap.read()
+#     frame =cv2.flip(frame,180)
 #     # теперь находим наши руки на изображении
 #     frame = detector.findHands(frame)
 #     #теперь можно показать
@@ -365,12 +427,16 @@
 #         # теперь посмотрим какие пальцы подняты
 #         fingers = detector.fingersUp()
 #         print(fingers)
+#         # count это количество чисел в массиве(в нашем случае единицы)
+#         print(fingers.count(1))
+#         cv2.putText(frame, str(fingers.count(1)), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 1)
 #         # print(fingers)
 #         # если указательный и средний подняты
 #         if fingers[1] == 1 and fingers[2] ==1:
 #             # тогда можем найти дистанцию между двумя нашими пальцами
 #             length, img, lineInfo = detector.findDistance(8, 12, frame)
 #             print(length)
+#             cv2.moveWindow("lesson_2", lineInfo[0]+int(length), lineInfo[1]+int(length) )
 #             print(lineInfo)
 #             # lineInfo =  x,y,w,h, centerX, centerY
 #
@@ -384,83 +450,149 @@
 #     if key == ord("q"):
 #         break
 
-########################   19   ########################
 
-####### ВСЕ ЧТО НИЖЕ ОБЪЯСНИТЬ!!!!!!!!!!!!!!!!!!!!
-# Научимся рисовать при помощи пальца
-
-import cv2
-
-from cvzone.HandTrackingModule import HandDetector
-import numpy as np
+# import cv2
+# # теперь поработаем с трекингом рук и рисованием
+# from cvzone.HandTrackingModule import HandDetector
+#
 # cap = cv2.VideoCapture(0)
-#
+# # также как и впрошлый раз инициализируем детектор
 # detector = HandDetector(maxHands=1)
-# xp, yp = 0,0
-# imgCanvas = np.zeros((480, 640, 3), np.uint8)
-# cv2.namedWindow("lesson_2")
-# def nothing(x):
-#     pass
-# cv2.createTrackbar('R','lesson_2',0,255,nothing)
-# cv2.createTrackbar('G','lesson_2',0,255,nothing)
-# cv2.createTrackbar('B','lesson_2',0,255,nothing)
-#
-#
+# xp,yp = 0,0
 # while True:
-#     r = cv2.getTrackbarPos('R', 'lesson_2')
-#     g = cv2.getTrackbarPos('G','lesson_2')
-#     b = cv2.getTrackbarPos('B','lesson_2')
 #     ret, frame = cap.read()
+#     paintImg = np.zeros((480,640))
+#     frame =cv2.flip(frame,180)
+#     # теперь находим наши руки на изображении
 #     frame = detector.findHands(frame)
-#     lmList, bbox = detector.findPosition(frame)
+#     #теперь можно показать
+#
+#
+#     lmList, HandInfo = detector.findPosition(frame)
+#     print(lmList)
+#     print(HandInfo)
+#     #lmList это наши точки на руке
+#     # всего их 21 штука например 8 это верхняя часть указательного
+#     # а 12 это верхняя часть среднего
+#     print(len(lmList))
 #     if len(lmList) != 0:
 #         # print("lm", lmList[8])
 #         x1, y1 = lmList[8]
 #         x2, y2 = lmList[12]
 #         # print(x1, y1, x2, y2)
+#         # теперь посмотрим какие пальцы подняты
 #         fingers = detector.fingersUp()
+#         print(fingers)
+#         # count это количество чисел в массиве(в нашем случае единицы)
+#         print(fingers.count(1))
+#         cv2.putText(frame, str(fingers.count(1)), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 1)
 #         # print(fingers)
+#         # если указательный и средний подняты
 #         if fingers[1] == 1 and fingers[2] ==0:
-#
-#             # length, img, lineInfo = detector.findDistance(8, 12, frame)
-#             # print(length)
-#             print(f'before xp {xp},yp {yp} x1 {x1} y1 {y1}')
+#             # тогда можем найти дистанцию между двумя нашими пальцами
+#             length, img, lineInfo = detector.findDistance(8, 12, frame)
 #             if xp == 0 and yp == 0:
+#                 print(f'before xp {xp},yp {yp} x1 {x1} y1 {y1}')
 #                 xp, yp = x1, y1
-#
-#             cv2.line(frame, (xp, yp), (x1, y1), (255,0,255), 25)
-#             cv2.line(imgCanvas, (xp, yp), (x1, y1), (b,g,r), 25)
+#             cv2.line(paintImg, (xp, yp), (x1, y1), (255,0,255), 25)
+#                 # cv2.line(paintImg, (xp, yp), (x1, y1), (255,0,0), 25)
 #             print(f' after xp {xp},yp {yp} x1 {x1} y1 {y1}')
+#         xp, yp = x1, y1
 #
-#             xp, yp = x1, y1
-#             print(f' afterxp {xp},yp {yp} x1 {x1} y1 {y1}')
-#
-#     imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
-#     _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
-#     imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
-#     img = cv2.bitwise_and(frame, imgInv)
-#     img = cv2.bitwise_or(img, imgCanvas)
 #             # lineInfo =  x,y,w,h, centerX, centerY
+#
 #             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
 #     # print(detector.fingersUp())
 #
 #
+#     cv2.imshow("lesson_2", frame)
 #
-#     cv2.imshow("lesson_2", img)
+#     # cv2.circle(paintImg, (coord[0], coord[1]), 2, (255, 0, 0), -1)
+#     # coord.clear()
+#     cv2.imshow("paint", paintImg)
 #     key = cv2.waitKey(1)
 #     if key == ord("q"):
 #         break
-#
-#
 
-########################   20   ########################
 
-# теперь сделаем управление мышкой с помощью наших пальцев
-# для этого импортируем библиотеку autopy
+########################   19   ########################
+
+####### ВСЕ ЧТО НИЖЕ ОБЪЯСНИТЬ!!!!!!!!!!!!!!!!!!!!
+# Научимся рисовать при помощи пальца
+#
+# import cv2
+#
+# from cvzone.HandTrackingModule import HandDetector
+# import numpy as np
+# # cap = cv2.VideoCapture(0)
+# #
+# # detector = HandDetector(maxHands=1)
+# # xp, yp = 0,0
+# # imgCanvas = np.zeros((480, 640, 3), np.uint8)
+# # cv2.namedWindow("lesson_2")
+# # def nothing(x):
+# #     pass
+# # cv2.createTrackbar('R','lesson_2',0,255,nothing)
+# # cv2.createTrackbar('G','lesson_2',0,255,nothing)
+# # cv2.createTrackbar('B','lesson_2',0,255,nothing)
+# #
+# #
+# # while True:
+# #     r = cv2.getTrackbarPos('R', 'lesson_2')
+# #     g = cv2.getTrackbarPos('G','lesson_2')
+# #     b = cv2.getTrackbarPos('B','lesson_2')
+# #     ret, frame = cap.read()
+# #     frame = detector.findHands(frame)
+# #     lmList, bbox = detector.findPosition(frame)
+# #     if len(lmList) != 0:
+# #         # print("lm", lmList[8])
+# #         x1, y1 = lmList[8]
+# #         x2, y2 = lmList[12]
+# #         # print(x1, y1, x2, y2)
+# #         fingers = detector.fingersUp()
+# #         # print(fingers)
+# #         if fingers[1] == 1 and fingers[2] ==0:
+# #
+# #             # length, img, lineInfo = detector.findDistance(8, 12, frame)
+# #             # print(length)
+# #             print(f'before xp {xp},yp {yp} x1 {x1} y1 {y1}')
+# #             if xp == 0 and yp == 0:
+# #                 xp, yp = x1, y1
+# #
+# #             cv2.line(frame, (xp, yp), (x1, y1), (255,0,255), 25)
+# #             cv2.line(imgCanvas, (xp, yp), (x1, y1), (b,g,r), 25)
+# #             print(f' after xp {xp},yp {yp} x1 {x1} y1 {y1}')
+# #
+# #             xp, yp = x1, y1
+# #             print(f' afterxp {xp},yp {yp} x1 {x1} y1 {y1}')
+# #
+# #     imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
+# #     _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
+# #     imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
+# #     img = cv2.bitwise_and(frame, imgInv)
+# #     img = cv2.bitwise_or(img, imgCanvas)
+# #             # lineInfo =  x,y,w,h, centerX, centerY
+# #             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
+# #     # print(detector.fingersUp())
+# #
+# #
+# #
+# #     cv2.imshow("lesson_2", img)
+# #     key = cv2.waitKey(1)
+# #     if key == ord("q"):
+# #         break
+# #
+# #
+#
+# ########################   20   ########################
+#
+# # теперь сделаем управление мышкой с помощью наших пальцев
+# # для этого импортируем библиотеку autopy
 # import cv2
 # import autopy
 # from cvzone.HandTrackingModule import HandDetector
 # import numpy as np
+# import time
 # ##########################
 # wCam, hCam = 640, 480
 # frameR = 50  # Frame Reduction
@@ -490,6 +622,7 @@ import numpy as np
 #
 #         cv2.rectangle(frame, (frameR, frameR), (wCam - frameR, hCam - frameR), (255, 0, 255), 2)
 #         # print(fingers)
+#         print(fingers)
 #         if fingers[1] == 1 and fingers[2] ==0:
 #             # length, img, lineInfo = detector.findDistance(8, 12, frame)
 #             # print(length)
@@ -509,41 +642,111 @@ import numpy as np
 #
 #             plocX, plocY = clocX, clocY
 #
-#             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
-#     # print(detector.fingersUp())
-#
-#
-#
+#         if fingers[1] == 1 and fingers[2] ==1:
+#             length, img, lineInfo = detector.findDistance(8, 12, frame)
+#             if length < 30:
+#                 autopy.mouse.click()
+#             length1, img, lineInfo1 = detector.findDistance(6, 8, frame)
+#             print(length1)
+#             if length1 < 50:
+#                 autopy.key.toggle(autopy.key.Code.DOWN_ARROW,down=True)
+#             elif length1 >20:
+#                 autopy.key.toggle(autopy.key.Code.UP_ARROW, down=True)
+#         if fingers[0] == 1 and fingers[4] ==1 and fingers[1] == 0 and fingers[2] ==0 and fingers[3] == 0:
+#             autopy.key.toggle(autopy.key.Code.ALT, down=True)
+#             time.sleep(0.5)
+#             autopy.key.tap(autopy.key.Code.TAB)
+#         else:
+#             autopy.key.toggle(autopy.key.Code.ALT, down=False)
+#         # if fingers[2] == 1  and fingers[1] == 0 and fingers[3] == 0 and fingers[4] == 0:
+#         #     img = cap.read()[1]
+#         #     cv2.imwrite("fuck.png", img)
+#         #     print("fuck")
+#         #     break
+# #
+# #
+# #             # frame = cv2.circle(frame, (x1,y1), int(length), (0,255,255),-1)
+# #     # print(detector.fingersUp())
+# #
+# #
+# #
 #     cv2.imshow("lesson_2", frame)
 #     key = cv2.waitKey(1)
 #     if key == ord("q"):
+#
 #         break
 
 
-
-
-
-
-from cvzone.PoseModule import PoseDetector
-from cvzone.FaceMeshModule import FaceMeshDetector
+# import cv2
+# from cvzone.PoseModule import PoseDetector
+# from cvzone.FaceMeshModule import FaceMeshDetector
 # cap = cv2.VideoCapture(0)
 #
-# # detector = PoseDetector()
-# detector =
+# detector = PoseDetector()
+# # detector = FaceMeshDetector()
 # while True:
 #     ret, frame = cap.read()
-#     frame, faces = detector.findFaceMesh(frame)
-#     print(faces)
+#     frame = detector.findPose(frame)
+#     # print(faces)
 #     cv2.imshow("pose", frame)
 #     cv2.waitKey(1)
+
+import cv2
+import mediapipe as mp
+from cvzone.FaceMeshModule import FaceMeshDetector
+import cvzone
+# cap = cv2.VideoCapture(0)
 #
-
-
-
-
-
-
-
+# detector = FaceMeshDetector()
+# detector1 = HandDetector()
+# img = np.zeros((480,640,3), np.uint8)
+#
+# mp_drawing = mp.solutions.drawing_utils
+# mp_face_mesh = mp.solutions.face_mesh
+# drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
+#
+# def FaceMesh(imgInput, imgOutput):
+#     with mp_face_mesh.FaceMesh(
+#             min_detection_confidence=0.5,
+#             min_tracking_confidence=0.5) as face_mesh:
+#
+#         results = face_mesh.process(imgInput)
+#         print(results.multi_face_landmarks)
+#         # Draw the face mesh annotations on the image.
+#         # img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+#         # img.flags.writeable = True
+#         if results.multi_face_landmarks:
+#             for face_landmarks in results.multi_face_landmarks:
+#                 mp_drawing.draw_landmarks(
+#                     image=imgOutput,
+#                     landmark_list=face_landmarks,
+#                     connections=mp_face_mesh.FACE_CONNECTIONS,
+#                     landmark_drawing_spec=drawing_spec,
+#                     connection_drawing_spec=drawing_spec)
+#
+# while True:
+#     ret, frame = cap.read()
+#
+#     FaceMesh(frame, img)
+#
+#
+#
+#
+#
+#     # frame, info = detector.findFaceMesh(frame)
+#     # frame = detector1.findHands(frame)
+#
+#
+#
+#     # cv2.imshow("test", img)
+#     StackedImge = cvzone.Utils.stackImages([frame, img], 2,1)
+#     img.fill(0)
+#     # print(info)
+#     cv2.imshow("mesh", StackedImge)
+#     key = cv2.waitKey(1)
+#     if key == ord("q"):
+#         break
+#
 
 
 # работа с teachible machine
