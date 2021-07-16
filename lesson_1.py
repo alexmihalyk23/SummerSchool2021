@@ -239,7 +239,6 @@ cap = cv2.VideoCapture(0)
 # cv2.imshow("image", image)
 # cv2.waitKey(0)
 
-#ОСТАНОВИЛИСЬ ТУ###################################
 
 # crop = frame[y:y + h, x:x + w].copy()
 #     cropGray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
@@ -595,8 +594,6 @@ cap = cv2.VideoCapture(0)
 #     cv2.setMouseCallback("lesson_1", MouseClick)
 #     cv2.waitKey(1)
 
-#### ВСЕ ВЫШЕ СДЕЛАНО #######################
-
 #################НА 08 #############
 
 
@@ -898,7 +895,7 @@ import cv2
 #         break
 
 
-########################3на 13 чис=ло№№№№№№№№№№№№№№№№№№№№№№№
+######################## на 13 число№№№№№№№№№№№№№№№№№№№№№№№
 # Features Detector
 # Как вы собираете пазлы?
 # https://docs.opencv.org/3.4/df/d54/tutorial_py_features_meaning.html
