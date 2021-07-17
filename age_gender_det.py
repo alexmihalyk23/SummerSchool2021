@@ -17,7 +17,7 @@ genderModel = "gender_net.caffemodel"
 MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
 # в модели присутствует список значений возраста и пола
 ageList = ['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
-genderList = ['Male', 'Female']
+genderList = ['Муж.', 'Жен.']
 
 # Читаем модели для распознавания возраста и пола
 ageNet = cv2.dnn.readNet(ageModel, ageProto)
@@ -32,7 +32,6 @@ while True:
     frameMinus[:, :, 2] = frame[:, :, 2] - 114.895847746
 
     if not hasFrame:
-        cv2.waitKey()
         break
 
     frame, faceBoxes = detector.findFaces(frame)
@@ -62,7 +61,7 @@ while True:
         age = ageList[agePreds[0].argmax()]
         print(f'Age: {age[1:-1]} years')
 
-        cv2.putText(frame, f'{gender}, {age}', (x+65, y - 20), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 0, 255), 2,
+        cv2.putText(frame, f'{gender}, {age}', (x+65, y - 20), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 0, 255), 2,
                     cv2.LINE_AA)
 
         # StacedBlobs = np.hstack([blobImage, cropframe])
