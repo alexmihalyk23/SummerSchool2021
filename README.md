@@ -1,1 +1,2 @@
-**opencv track face**
+**Summer School 2021**
+
